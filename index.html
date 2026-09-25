@@ -503,8 +503,8 @@ fbq('track', 'PageView');
     const nota = document.getElementById('notaCondicional');
     nota.innerHTML = '';
 
-    // Semanas de gestação = dado de saúde: só vai pro Lead Hub com autorização
-    document.getElementById('consentimentoSaude').hidden = respostas.tipo !== 'Gestante';
+    // Gestação e nascimento = dado de saúde: só vai pro Lead Hub com autorização
+    document.getElementById('consentimentoSaude').hidden = respostas.tipo !== 'Gestante' && respostas.tipo !== 'Newborn';
 
     if(respostas.tipo === 'Gestante'){
       let texto = '';
@@ -591,7 +591,9 @@ fbq('track', 'PageView');
 
     const respostasQuiz = { 'Tipo de ensaio': respostas.tipo };
     if(respostas.tipo === 'Newborn'){
-      respostasQuiz['Bebê'] = document.querySelector('#opcoesNewborn .selecionada')?.textContent.trim();
+      if(checkSaude.checked){
+        respostasQuiz['Bebê'] = document.querySelector('#opcoesNewborn .selecionada')?.textContent.trim();
+      }
     } else if(respostas.tipo === 'Gestante'){
       if(checkSaude.checked){
         respostasQuiz['Semanas de gestação'] = document.querySelector('#opcoesSemanas .selecionada')?.textContent.trim();
