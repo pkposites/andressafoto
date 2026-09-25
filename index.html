@@ -18,9 +18,11 @@ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('consent', 'revoke');
 fbq('init', '2163257197549501');
 fbq('track', 'PageView');
 </script>
+<script src="https://leadinghub.netlify.app/tracker.js" data-key="pk_94406836b33f43488b00f37a39bd846c" data-consent="banner" async></script>
 
 <style>
   :root{
@@ -221,6 +223,35 @@ fbq('track', 'PageView');
     font-size:12px;
     color:#a99a84;
   }
+  .rodape-confianca a{color:inherit;}
+
+  .aviso-privacidade{
+    text-align:center;
+    font-size:12px;
+    line-height:1.5;
+    color:#9b8b76;
+    margin-top:12px;
+  }
+  .aviso-privacidade a{color:var(--marrom-claro);}
+
+  .consentimento-saude{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    line-height:1.45;
+    color:#6b5436;
+    margin:-4px 0 16px;
+    cursor:pointer;
+  }
+  .consentimento-saude[hidden]{display:none;}
+  .consentimento-saude input{
+    margin-top:2px;
+    width:16px;
+    height:16px;
+    flex:0 0 auto;
+    accent-color:var(--dourado);
+  }
 
   /* Carrossel */
   .carrossel-wrap{
@@ -358,14 +389,22 @@ fbq('track', 'PageView');
 
       <div id="notaCondicional"></div>
 
-      <input type="text" class="campo" id="inputNome" placeholder="Seu primeiro nome">
+      <input type="text" class="campo" id="inputNome" placeholder="Seu primeiro nome" autocomplete="given-name" required>
+      <input type="tel" class="campo" id="inputTelefone" placeholder="WhatsApp com DDD: (11) 91234-5678" inputmode="numeric" autocomplete="tel-national" maxlength="15" required>
+
+      <label class="consentimento-saude" id="consentimentoSaude" hidden>
+        <input type="checkbox" id="checkSaude">
+        <span>Autorizo o uso das minhas respostas sobre saúde somente para o meu atendimento.</span>
+      </label>
+
       <button class="btn" id="btnEnviar" disabled>Falar com a Andressa no WhatsApp</button>
+      <p class="aviso-privacidade">Ao continuar, você concorda em ser contatado pelo WhatsApp. Veja a <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>.</p>
       <span class="voltar" id="voltarStep3">← Voltar</span>
     </div>
 
   </div>
 
-  <p class="rodape-confianca">Andressa Pratez Fotografia · Santo Amaro, São Paulo</p>
+  <p class="rodape-confianca">Andressa Pratez Fotografia · Santo Amaro, São Paulo · <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a></p>
 </div>
 
 <script>
@@ -464,6 +503,9 @@ fbq('track', 'PageView');
     const nota = document.getElementById('notaCondicional');
     nota.innerHTML = '';
 
+    // Semanas de gestação = dado de saúde: só vai pro Lead Hub com autorização
+    document.getElementById('consentimentoSaude').hidden = respostas.tipo !== 'Gestante';
+
     if(respostas.tipo === 'Gestante'){
       let texto = '';
       if(respostas.detalhe === 'menos de 20 semanas'){
@@ -479,11 +521,33 @@ fbq('track', 'PageView');
     }
   }
 
-  // Nome -> habilita botão
+  // Nome + WhatsApp -> habilita botão
   const inputNome = document.getElementById('inputNome');
+  const inputTelefone = document.getElementById('inputTelefone');
+  const checkSaude = document.getElementById('checkSaude');
   const btnEnviar = document.getElementById('btnEnviar');
-  inputNome.addEventListener('input', () => {
-    btnEnviar.disabled = inputNome.value.trim().length < 2;
+
+  function mascaraTelefone(valor){
+    const d = valor.replace(/\D/g, '').slice(0, 11);
+    if(d.length <= 2) return d.length ? '(' + d : '';
+    const corte = d.length === 11 ? 7 : 6;
+    if(d.length <= corte) return '(' + d.slice(0,2) + ') ' + d.slice(2);
+    return '(' + d.slice(0,2) + ') ' + d.slice(2, corte) + '-' + d.slice(corte);
+  }
+
+  function telefoneValido(){
+    const d = inputTelefone.value.replace(/\D/g, '');
+    return d.length === 10 || d.length === 11;
+  }
+
+  function atualizarBotao(){
+    btnEnviar.disabled = inputNome.value.trim().length < 2 || !telefoneValido();
+  }
+
+  inputNome.addEventListener('input', atualizarBotao);
+  inputTelefone.addEventListener('input', () => {
+    inputTelefone.value = mascaraTelefone(inputTelefone.value);
+    atualizarBotao();
   });
 
   // Envia pro WhatsApp com as respostas
@@ -521,8 +585,25 @@ fbq('track', 'PageView');
     }
     mensagem += '. Vim pela landing page e gostaria de saber mais sobre disponibilidade e valores 💛';
 
+    // 3) Lead Hub: contato + respostas do quiz
+    const telefone = inputTelefone.value.replace(/\D/g, '');
+    window.LeadHub?.identify({ name: nome, phone: telefone });
+
+    const respostasQuiz = { 'Tipo de ensaio': respostas.tipo };
+    if(respostas.tipo === 'Newborn'){
+      respostasQuiz['Bebê'] = document.querySelector('#opcoesNewborn .selecionada')?.textContent.trim();
+    } else if(respostas.tipo === 'Gestante'){
+      if(checkSaude.checked){
+        respostasQuiz['Semanas de gestação'] = document.querySelector('#opcoesSemanas .selecionada')?.textContent.trim();
+      }
+    } else {
+      respostasQuiz['Quando'] = document.querySelector('#opcoesFamilia .selecionada')?.textContent.trim();
+    }
+    window.LeadHub?.set(respostasQuiz);
+
     const url = 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(mensagem);
-    setTimeout(() => { window.location.href = url; }, 200);
+    const destino = window.LeadHub ? window.LeadHub.whatsappUrl(url) : url;
+    setTimeout(() => { window.location.href = destino; }, 200);
   });
 </script>
 
