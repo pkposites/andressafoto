@@ -180,9 +180,6 @@ fbq('track', 'PageView');
   .opcao:hover{border-color:var(--dourado); background:#fbf6ec;}
   .opcao:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
   .opcao .emoji{font-size:19px;}
-  .opcao-texto{display:flex; flex-direction:column; gap:2px;}
-  .opcao-preco{font-size:13px; font-weight:600; color:var(--dourado);}
-  .opcao-preco:empty{display:none;}
   .opcao.selecionada{
     border-color:var(--dourado);
     background:linear-gradient(135deg, #fbf3e3, #f4e8d4);
@@ -214,11 +211,7 @@ fbq('track', 'PageView');
     color:var(--marrom);
     line-height:1.2;
   }
-  .resumo-preco{font-size:14px; font-weight:600; color:var(--dourado); margin-top:2px;}
   .resumo-detalhe{font-size:12.5px; color:#7a6a57; line-height:1.4; margin-top:2px;}
-  .resumo ul{list-style:none; margin-top:6px;}
-  .resumo li{font-size:12.5px; color:#6b5d4d; line-height:1.45;}
-  .resumo li::before{content:"✓ "; color:var(--dourado); font-weight:600;}
   .resumo.compacto{padding:10px 14px; margin-bottom:16px;}
 
   .campo{
@@ -494,13 +487,13 @@ fbq('track', 'PageView');
       <div class="eyebrow">Andressa Pratez Fotografia</div>
       <h1 tabindex="-1">Seu ensaio de gestante, newborn ou família, <em>com calma e carinho</em></h1>
       <span class="local">📍 Santo Amaro • São Paulo</span>
-      <p class="sub">Escolha seu ensaio, conheça o investimento inicial e responda algumas perguntas para conversar com a Andressa.</p>
+      <p class="sub">Escolha seu ensaio e responda algumas perguntas rápidas para conversar com a Andressa.</p>
 
       <div class="opcoes" id="opcoesTipo">
-        <button type="button" class="opcao" data-valor="Gestante"><span class="emoji">🤰</span><span class="opcao-texto"><span>Ensaio de Gestante</span><span class="opcao-preco"></span></span></button>
-        <button type="button" class="opcao" data-valor="Newborn"><span class="emoji">👶</span><span class="opcao-texto"><span>Ensaio Newborn</span><span class="opcao-preco"></span></span></button>
-        <button type="button" class="opcao" data-valor="Família"><span class="emoji">❤️</span><span class="opcao-texto"><span>Ensaio em Família / Outro</span><span class="opcao-preco"></span></span></button>
-        <button type="button" class="opcao" data-valor="Natal" hidden><span class="emoji">🎄</span><span class="opcao-texto"><span>Ensaio de Natal</span><span class="opcao-preco"></span></span></button>
+        <button type="button" class="opcao" data-valor="Gestante"><span class="emoji">🤰</span>Ensaio de Gestante</button>
+        <button type="button" class="opcao" data-valor="Newborn"><span class="emoji">👶</span>Ensaio Newborn</button>
+        <button type="button" class="opcao" data-valor="Família"><span class="emoji">❤️</span>Ensaio em Família / Outro</button>
+        <button type="button" class="opcao" data-valor="Natal" hidden><span class="emoji">🎄</span>Ensaio de Natal</button>
       </div>
 
       <p class="prova-social">💛 Mais de 5 mil pessoas acompanham o trabalho da Andressa</p>
@@ -603,73 +596,29 @@ fbq('track', 'PageView');
 <script>
   const WHATSAPP_NUMERO = "5511964460083";
 
-  /*
-   * Dados comerciais de cada ensaio. Só aparece na página o que estiver
-   * preenchido aqui (nada de valores provisórios):
-   *   precoInicial    número, ex.: 1200            -> "A partir de R$ 1.200"
-   *   precoReferente  a que pacote o valor se refere, ex.: "Pacote Essencial"
-   *   parcelamento    { parcelas: 3, valorParcela: 400, total: 1200, condicoes: "sem juros no cartão" }
-   *   entregas        até 3 itens confirmados, ex.: ["20 fotos editadas", ...]
-   *   foto            foto real do portfólio usada no resumo do ensaio
-   */
+  // Ensaios: nome exibido, etapa da pergunta e foto real usada no resumo
   const ENSAIOS = {
-    'Gestante': {
-      nome: 'Ensaio de Gestante', etapa: '2a',
-      foto: 'img/gestante-1.jpg', fotoAlt: 'Ensaio de gestante por Andressa Pratez',
-      precoInicial: null, precoReferente: '', parcelamento: null, entregas: []
-    },
-    'Newborn': {
-      nome: 'Ensaio Newborn', etapa: '2b',
-      foto: 'img/newborn-1.jpg', fotoAlt: 'Ensaio newborn por Andressa Pratez',
-      precoInicial: null, precoReferente: '', parcelamento: null, entregas: []
-    },
-    'Família': {
-      nome: 'Ensaio em Família', etapa: '2c',
-      foto: 'img/familia-1.jpg', fotoAlt: 'Ensaio em família por Andressa Pratez',
-      precoInicial: null, precoReferente: '', parcelamento: null, entregas: []
-    },
-    'Natal': {
-      nome: 'Ensaio de Natal', etapa: '2d',
-      foto: null, fotoAlt: 'Cenário de Natal do estúdio Andressa Pratez',
-      precoInicial: null, precoReferente: '', parcelamento: null, entregas: []
-    }
+    'Gestante': { nome: 'Ensaio de Gestante', etapa: '2a', foto: 'img/gestante-1.jpg', fotoAlt: 'Ensaio de gestante por Andressa Pratez' },
+    'Newborn':  { nome: 'Ensaio Newborn',     etapa: '2b', foto: 'img/newborn-1.jpg',  fotoAlt: 'Ensaio newborn por Andressa Pratez' },
+    'Família':  { nome: 'Ensaio em Família',  etapa: '2c', foto: 'img/familia-1.jpg',  fotoAlt: 'Ensaio em família por Andressa Pratez' },
+    'Natal':    { nome: 'Ensaio de Natal',    etapa: '2d', foto: null,                 fotoAlt: 'Cenário de Natal do estúdio Andressa Pratez' }
   };
 
   /*
-   * Campanha de Natal. A categoria aparece entre "inicio" e "fim" (inclusive).
-   * A faixa e o pop-up só aparecem se também houver uma foto real do cenário
-   * em "foto" (ex.: "img/natal-cenario.jpg").
+   * Campanha de Natal. "ativa: false" tira a categoria, a faixa e o pop-up.
+   * A faixa e o pop-up só aparecem com uma foto real do cenário em "foto"
+   * (ex.: "img/natal-cenario.jpg").
    */
   const CAMPANHA_NATAL = {
-    inicio: '2026-11-01',
-    fim: '2026-12-24',
+    ativa: true,
     foto: null,
     popupAposMs: 7000
   };
 
-  function hojeISO(){
-    const d = new Date();
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-  }
-  function natalNoPeriodo(){
-    const hoje = hojeISO();
-    return hoje >= CAMPANHA_NATAL.inicio && hoje <= CAMPANHA_NATAL.fim;
-  }
   function natalComDestaque(){
-    return natalNoPeriodo() && !!CAMPANHA_NATAL.foto;
+    return CAMPANHA_NATAL.ativa && !!CAMPANHA_NATAL.foto;
   }
 
-  function brl(valor){
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: Number.isInteger(valor) ? 0 : 2 });
-  }
-  function textoPreco(e){
-    return typeof e.precoInicial === 'number' ? 'A partir de ' + brl(e.precoInicial) : '';
-  }
-  function textoParcelamento(e){
-    const p = e.parcelamento;
-    if(!p || !p.parcelas || !p.valorParcela || !p.total) return '';
-    return 'ou ' + p.parcelas + 'x de ' + brl(p.valorParcela) + ' (total ' + brl(p.total) + (p.condicoes ? ', ' + p.condicoes : '') + ')';
-  }
   function el(tag, classe, texto){
     const n = document.createElement(tag);
     if(classe) n.className = classe;
@@ -677,7 +626,7 @@ fbq('track', 'PageView');
     return n;
   }
 
-  // Resumo do ensaio: completo (com foto e entregas) na etapa 2, compacto na etapa 3
+  // Resumo do ensaio: com foto na etapa 2, compacto (com a resposta) na etapa 3
   function montarResumo(container, tipo, compacto, detalheTexto){
     container.innerHTML = '';
     const e = ENSAIOS[tipo];
@@ -692,29 +641,11 @@ fbq('track', 'PageView');
     const info = el('div', 'resumo-info');
     info.appendChild(el('div', 'resumo-nome', e.nome));
     if(detalheTexto) info.appendChild(el('div', 'resumo-detalhe', detalheTexto));
-    const preco = textoPreco(e);
-    if(preco){
-      info.appendChild(el('div', 'resumo-preco', preco));
-      if(e.precoReferente) info.appendChild(el('div', 'resumo-detalhe', 'Valor inicial referente a: ' + e.precoReferente));
-      const parcelas = textoParcelamento(e);
-      if(parcelas) info.appendChild(el('div', 'resumo-detalhe', parcelas));
-    }
-    const entregas = (e.entregas || []).filter(Boolean).slice(0, 3);
-    if(entregas.length && !compacto){
-      const ul = el('ul');
-      entregas.forEach(t => ul.appendChild(el('li', '', t)));
-      info.appendChild(ul);
-    }
     box.appendChild(info);
     container.appendChild(box);
   }
 
-  // Cartões da primeira tela: preço inicial (quando confirmado) e categoria de Natal
-  document.querySelectorAll('#opcoesTipo .opcao').forEach(op => {
-    const e = ENSAIOS[op.dataset.valor];
-    op.querySelector('.opcao-preco').textContent = e ? textoPreco(e) : '';
-  });
-  if(natalNoPeriodo()) document.querySelector('#opcoesTipo [data-valor="Natal"]').hidden = false;
+  if(CAMPANHA_NATAL.ativa) document.querySelector('#opcoesTipo [data-valor="Natal"]').hidden = false;
 
   // Carrossel: gera os dots e atualiza o ativo no scroll
   (function(){
