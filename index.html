@@ -231,10 +231,9 @@ fbq('track', 'PageView');
 
   /* Valor inicial (tela de contato) */
   .preco-inicial{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+    display:block;
+    text-align:center;
+    line-height:1.35;
     margin:2px 0 14px;
     padding:10px 14px;
     border-radius:10px;
@@ -244,7 +243,11 @@ fbq('track', 'PageView');
     font-size:15px;
     color:var(--texto);
   }
+  .preco-inicial[hidden]{display:none;}
   .preco-inicial strong{
+    display:inline-block;
+    white-space:nowrap;
+    margin-left:2px;
     font-family:'Cormorant Garamond', Georgia, serif;
     font-size:22px;
     font-weight:600;
@@ -791,7 +794,7 @@ fbq('track', 'PageView');
       <span>Autorizo o uso das minhas respostas sobre saúde somente para o meu atendimento.</span>
     </label>
 
-    <p class="preco-inicial">✨ Ensaios a partir de <strong>R$ 650</strong></p>
+    <p class="preco-inicial" id="precoInicial">✨ <span id="precoEnsaio">Ensaios</span> a partir de <strong id="precoValor"></strong></p>
     <button class="btn" id="btnEnviar" disabled>Continuar no WhatsApp</button>
     <p class="apoio-botao">Vou te passar as opções e conferir as datas com você.</p>
     <p class="aviso-privacidade">Ao continuar, você concorda em ser contatado pelo WhatsApp. Veja a <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>.</p>
@@ -807,12 +810,13 @@ fbq('track', 'PageView');
 <script>
   const WHATSAPP_NUMERO = "5511964460083";
 
-  // Ensaios: nome no resumo, nome na mensagem do WhatsApp e etapa da pergunta específica
+  // Ensaios: nome no resumo, nome na mensagem do WhatsApp, etapa da pergunta
+  // específica e valor inicial ("a partir de", em reais) mostrado no contato
   const ENSAIOS = {
-    'Gestante': { nome: 'Ensaio de Gestante', nomeMsg: 'no ensaio de gestante', etapa: '2a', opcoes: '#opcoesSemanas' },
-    'Newborn':  { nome: 'Ensaio Newborn',     nomeMsg: 'no ensaio newborn',     etapa: '2b', opcoes: '#opcoesNewborn' },
-    'Família':  { nome: 'Ensaio em Família',  nomeMsg: 'no ensaio em família',  etapa: '2c', opcoes: '#opcoesFamilia' },
-    'Natal':    { nome: 'Memórias de Natal',  nomeMsg: 'no ensaio Memórias de Natal', etapa: '2d', opcoes: '#opcoesNatal' }
+    'Gestante': { nome: 'Ensaio de Gestante', nomeMsg: 'no ensaio de gestante', etapa: '2a', opcoes: '#opcoesSemanas', aPartirDe: 750 },
+    'Newborn':  { nome: 'Ensaio Newborn',     nomeMsg: 'no ensaio newborn',     etapa: '2b', opcoes: '#opcoesNewborn', aPartirDe: 760 },
+    'Família':  { nome: 'Ensaio em Família',  nomeMsg: 'no ensaio em família',  etapa: '2c', opcoes: '#opcoesFamilia', aPartirDe: 650 },
+    'Natal':    { nome: 'Memórias de Natal',  nomeMsg: 'no ensaio Memórias de Natal', etapa: '2d', opcoes: '#opcoesNatal', aPartirDe: 500 }
   };
 
   /*
@@ -964,6 +968,15 @@ fbq('track', 'PageView');
 
   // --- Tela de contato --------------------------------------------------------
   function montarContato(){
+    // Valor inicial do ensaio escolhido
+    const ensaio = ENSAIOS[respostas.tipo];
+    const temPreco = typeof ensaio.aPartirDe === 'number';
+    document.getElementById('precoInicial').hidden = !temPreco;
+    if(temPreco){
+      document.getElementById('precoEnsaio').textContent = ensaio.nome;
+      document.getElementById('precoValor').textContent = 'R$ ' + ensaio.aPartirDe.toLocaleString('pt-BR');
+    }
+
     document.getElementById('resumoRespostas').textContent =
       [ENSAIOS[respostas.tipo].nome, respostas.detalheTexto, respostas.fotosResumo].filter(Boolean).join(' · ');
 
