@@ -8,9 +8,9 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#f7f2ea">
+<meta name="theme-color" content="#FAF4EB">
 <meta property="og:title" content="Andressa Pratez Fotografia · Grupo VIP / Agendamento">
-<meta property="og:description" content="Responda 3 perguntinhas rápidas e fale direto com a Andressa sobre seu ensaio de gestante, newborn ou família.">
+<meta property="og:description" content="Ensaios de gestante, newborn, família e Natal em Santo Amaro, São Paulo. Escolha seu ensaio e fale com a Andressa pelo WhatsApp.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,429 +30,301 @@ fbq('track', 'PageView');
 
 <style>
   :root{
-    --creme:#f7f2ea;
-    --creme-escuro:#ece3d3;
-    --marrom:#5c4632;
-    --marrom-claro:#8a6f56;
-    --dourado:#b9914f;
-    --texto:#3c3024;
-    --rosa-suave:#d9b8a8;
-    --branco:#fffdfa;
+    --fundo:#FAF4EB;
+    --cartao:#FFFDF9;
+    --areia:#E6D8C3;
+    --areia-escura:#D4C1A3;
+    --texto:#48342B;
+    --texto-suave:#7A6556;
+    --vinho:#60343B;
+    --vinho-escuro:#4B272D;
+    --dourado:#B58E57;
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
 
+  html{-webkit-text-size-adjust:100%;}
   body{
-    background:var(--creme);
-    background-image:
-      radial-gradient(circle at 10% 0%, rgba(185,145,79,0.08), transparent 45%),
-      radial-gradient(circle at 95% 100%, rgba(217,184,168,0.18), transparent 50%);
-    font-family:'Jost', sans-serif;
+    background:var(--fundo);
+    font-family:'Jost', system-ui, sans-serif;
     color:var(--texto);
     min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     padding:16px 16px 28px;
+    overflow-x:hidden;
   }
   /* Enquanto o aviso de cookies do Lead Hub estiver aberto, deixa espaço
      para que ele nunca cubra as opções nem o botão do WhatsApp. */
   body:has([data-leadhub-consent]){padding-bottom:210px;}
-  body.modal-aberto{overflow:hidden;}
 
-  .wrap{
-    max-width:440px;
-    width:100%;
+  .wrap{max-width:440px; margin:0 auto;}
+
+  /* Assinatura */
+  .assinatura{
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .assinatura-nome{
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-size:19px;
+    font-weight:600;
+    letter-spacing:.3px;
+    color:var(--texto);
+  }
+  .assinatura-local{
+    font-size:12px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--texto-suave);
+    margin-top:1px;
   }
 
-  /* Progresso */
+  /* Progresso (a partir da 2ª tela) */
   .progresso{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     margin-bottom:14px;
   }
+  .progresso[hidden]{display:none;}
   .progress-track{
     flex:1;
-    height:4px;
-    background:var(--creme-escuro);
-    border-radius:4px;
+    height:3px;
+    background:var(--areia);
+    border-radius:3px;
     overflow:hidden;
   }
   .progress-fill{
     height:100%;
-    background:linear-gradient(90deg, var(--dourado), var(--marrom-claro));
-    border-radius:4px;
-    width:33%;
-    transition:width .4s ease;
+    background:var(--dourado);
+    border-radius:3px;
+    width:50%;
+    transition:width .35s ease;
   }
-  .etapa-label{
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:.5px;
-    color:var(--marrom-claro);
-    white-space:nowrap;
-  }
+  .etapa-label{font-size:12px; color:var(--texto-suave); white-space:nowrap;}
 
-  .card{
-    background:var(--branco);
-    border-radius:20px;
-    padding:0 22px 26px;
-    box-shadow:0 16px 40px rgba(92,70,50,0.10);
-    border:1px solid rgba(185,145,79,0.15);
-    overflow:hidden;
-  }
+  .step{display:none;}
+  .step.active{display:block; animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
 
-  .step{display:none; padding-top:28px;}
-  .step[data-step="1"]{padding-top:0;}
-  .step.active{display:block; animation:fadeIn .35s ease;}
-  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
-
-  .eyebrow{
-    text-align:center;
-    font-size:12px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color:var(--marrom-claro);
-    font-weight:600;
-    margin-bottom:6px;
+  .foto{
+    display:block;
+    width:100%;
+    border-radius:12px;
+    object-fit:cover;
+    background:var(--areia);
   }
+  .foto-abertura{aspect-ratio:3/2; object-position:center 35%; margin-bottom:16px;}
+  @media (min-width:600px){ .foto-abertura{aspect-ratio:4/3;} }
+  .foto-etapa{aspect-ratio:16/9; object-position:center 30%; margin-bottom:16px;}
+  .foto[hidden]{display:none;}
 
   h1{
-    font-family:'Cormorant Garamond', serif;
-    font-size:25px;
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-size:28px;
     font-weight:600;
-    line-height:1.2;
-    color:var(--marrom);
-    text-align:center;
-    margin-bottom:10px;
-  }
-  h1 em{font-style:italic; color:var(--dourado);}
-  h1:focus{outline:none;}
-
-  .local{
-    display:block;
-    width:max-content;
-    margin:0 auto 10px;
-    padding:3px 12px;
-    border-radius:999px;
-    background:var(--creme);
-    border:1px solid rgba(185,145,79,0.30);
-    font-size:12.5px;
-    font-weight:600;
-    letter-spacing:.6px;
-    color:var(--marrom-claro);
-  }
-
-  .sub{
-    text-align:center;
-    font-size:14.5px;
-    color:#6b5d4d;
-    line-height:1.5;
-    margin-bottom:16px;
-  }
-
-  .opcoes{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+    line-height:1.15;
+    color:var(--texto);
     margin-bottom:8px;
   }
+  h1:focus{outline:none;}
+  .natal h1{color:var(--vinho);}
 
+  .apoio{
+    font-size:15px;
+    line-height:1.5;
+    color:var(--texto-suave);
+    margin-bottom:18px;
+  }
+  .chamada{
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-size:21px;
+    font-weight:600;
+    color:var(--texto);
+    margin-bottom:10px;
+  }
+  .linha-pacote{
+    font-size:13.5px;
+    color:var(--vinho);
+    font-weight:500;
+    margin:-8px 0 16px;
+  }
+  .linha-pacote[hidden]{display:none;}
+
+  /* Cartões clicáveis */
+  .opcoes{display:flex; flex-direction:column; gap:8px;}
   .opcao{
     display:flex;
     align-items:center;
     gap:12px;
     width:100%;
-    padding:12px 16px;
-    border:1.5px solid var(--creme-escuro);
-    border-radius:13px;
-    background:var(--creme);
-    cursor:pointer;
-    font-family:'Jost', sans-serif;
-    font-size:15px;
-    font-weight:500;
-    color:var(--texto);
-    transition:.15s ease;
-    text-align:left;
-  }
-  .opcao[hidden]{display:none;}
-  .opcao:hover{border-color:var(--dourado); background:#fbf6ec;}
-  .opcao:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
-  .opcao .emoji{font-size:19px;}
-  .opcao.selecionada{
-    border-color:var(--dourado);
-    background:linear-gradient(135deg, #fbf3e3, #f4e8d4);
-  }
-
-  /* Resumo do ensaio escolhido (etapas 2 e 3) */
-  .resumo{
-    display:flex;
-    gap:14px;
-    align-items:center;
-    background:var(--creme);
-    border:1px solid rgba(185,145,79,0.25);
-    border-radius:14px;
-    padding:10px;
-    margin-bottom:20px;
-  }
-  .resumo img{
-    width:84px;
-    height:84px;
-    flex:0 0 84px;
+    min-height:52px;
+    padding:9px 14px;
+    background:var(--cartao);
+    border:1px solid var(--areia);
     border-radius:10px;
-    object-fit:cover;
+    font-family:'Jost', system-ui, sans-serif;
+    color:var(--texto);
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
   }
-  .resumo-info{min-width:0; padding:2px 4px;}
-  .resumo-nome{
-    font-family:'Cormorant Garamond', serif;
-    font-size:20px;
-    font-weight:600;
-    color:var(--marrom);
-    line-height:1.2;
+  .opcao:hover{border-color:var(--areia-escura);}
+  .opcao:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
+  .opcao.selecionada{border-color:var(--dourado); background:#FBF3E6; box-shadow:inset 0 0 0 1px var(--dourado);}
+  .opcao-icone{flex:0 0 auto; font-size:16px; width:20px; text-align:center; opacity:.85;}
+  .opcao-texto{flex:1; min-width:0; display:flex; flex-direction:column;}
+  .opcao-titulo{font-size:15.5px; font-weight:500; line-height:1.3;}
+  .opcao-sub{font-size:13px; color:var(--texto-suave); line-height:1.35;}
+  .opcao-seta{flex:0 0 auto; color:var(--areia-escura); font-size:18px; line-height:1;}
+
+  /* Faixa de Natal */
+  .faixa-natal{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    min-height:52px;
+    margin-top:12px;
+    padding:10px 14px;
+    background:var(--vinho);
+    border:none;
+    border-radius:10px;
+    color:#FBF1EC;
+    font-family:'Jost', system-ui, sans-serif;
+    text-align:left;
+    cursor:pointer;
   }
-  .resumo-detalhe{font-size:12.5px; color:#7a6a57; line-height:1.4; margin-top:2px;}
-  .resumo.compacto{padding:10px 14px; margin-bottom:16px;}
+  .faixa-natal[hidden]{display:none;}
+  .faixa-natal:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
+  .faixa-natal .opcao-titulo{font-family:'Cormorant Garamond', Georgia, serif; font-size:19px; font-weight:600;}
+  .faixa-natal .opcao-sub{color:#E9D3CF;}
+  .faixa-natal .opcao-seta{color:#E9D3CF;}
+
+  .apresentacao{
+    margin-top:20px;
+    padding:14px 16px;
+    background:var(--cartao);
+    border:1px solid var(--areia);
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--texto-suave);
+  }
+  .apresentacao[hidden]{display:none;}
+  .apresentacao cite{display:block; margin-top:6px; font-style:normal; font-size:12.5px; color:var(--texto);}
+
+  /* Contato */
+  .resumo-respostas{
+    padding:10px 14px;
+    margin-bottom:14px;
+    background:var(--cartao);
+    border:1px solid var(--areia);
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.45;
+    color:var(--texto);
+  }
+  .nota{
+    padding:10px 14px;
+    margin-bottom:14px;
+    background:#FBF3E6;
+    border:1px solid var(--areia);
+    border-radius:10px;
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--texto-suave);
+  }
+  .nota:empty{display:none;}
+  .nota b{color:var(--texto); font-weight:600;}
 
   .campo{
     width:100%;
-    padding:15px 16px;
-    border:1.5px solid var(--creme-escuro);
-    border-radius:13px;
-    font-family:'Jost', sans-serif;
-    font-size:15.5px;
+    min-height:48px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    background:var(--cartao);
+    border:1px solid var(--areia-escura);
+    border-radius:10px;
+    font-family:'Jost', system-ui, sans-serif;
+    font-size:16px;
     color:var(--texto);
-    background:var(--creme);
-    margin-bottom:14px;
   }
-  .campo:focus{outline:none; border-color:var(--dourado); background:#fff;}
-
-  .btn{
-    display:block;
-    width:100%;
-    background:linear-gradient(135deg, var(--marrom-claro), var(--marrom));
-    color:#fff;
-    font-family:'Jost', sans-serif;
-    font-weight:600;
-    font-size:15.5px;
-    padding:16px 20px;
-    border:none;
-    border-radius:13px;
-    cursor:pointer;
-    box-shadow:0 10px 24px rgba(92,70,50,0.25);
-    margin-top:6px;
-  }
-  .btn:disabled{opacity:.45; cursor:not-allowed; box-shadow:none;}
-  .btn:active:not(:disabled){transform:scale(0.98);}
-
-  .voltar{
-    display:block;
-    margin:14px auto 0;
-    background:none;
-    border:none;
-    font-family:'Jost', sans-serif;
-    font-size:13px;
-    color:#9b8b76;
-    cursor:pointer;
-    text-decoration:underline;
-  }
-
-  .nota{
-    background:#fbf3e3;
-    border:1px solid rgba(185,145,79,0.30);
-    border-radius:12px;
-    padding:14px 16px;
-    font-size:13.5px;
-    line-height:1.55;
-    color:#6b5436;
-    margin-bottom:18px;
-  }
-  .nota b{color:var(--marrom);}
-
-  .explica{
-    font-size:13px;
-    line-height:1.5;
-    color:#6b5d4d;
-    text-align:center;
-    margin:2px 0 8px;
-  }
-
-  .rodape-confianca{
-    text-align:center;
-    margin-top:18px;
-    font-size:12px;
-    color:#a99a84;
-  }
-  .rodape-confianca a{color:inherit;}
-
-  .aviso-privacidade{
-    text-align:center;
-    font-size:12px;
-    line-height:1.5;
-    color:#9b8b76;
-    margin-top:12px;
-  }
-  .aviso-privacidade a{color:var(--marrom-claro);}
+  .campo::placeholder{color:#A8968A;}
+  .campo:focus{outline:none; border-color:var(--dourado); box-shadow:0 0 0 2px rgba(181,142,87,.18);}
 
   .consentimento-saude{
     display:flex;
     align-items:flex-start;
     gap:10px;
+    margin:4px 0 12px;
     font-size:13px;
     line-height:1.45;
-    color:#6b5436;
-    margin:-2px 0 16px;
+    color:var(--texto-suave);
     cursor:pointer;
   }
   .consentimento-saude[hidden]{display:none;}
-  .consentimento-saude input{
-    margin-top:2px;
-    width:16px;
-    height:16px;
-    flex:0 0 auto;
-    accent-color:var(--dourado);
-  }
+  .consentimento-saude input{margin-top:2px; width:18px; height:18px; flex:0 0 auto; accent-color:var(--vinho);}
 
-  /* Carrossel */
-  .carrossel-wrap{
-    margin:0 -22px 12px;
-  }
-  .carrossel{
-    display:flex;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-    border-radius:20px 20px 0 0;
-    scrollbar-width:none;
-  }
-  .carrossel::-webkit-scrollbar{display:none;}
-  .slide{
-    flex:0 0 100%;
-    scroll-snap-align:center;
-    aspect-ratio:2/1;
-    overflow:hidden;
-  }
-  .slide img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center 25%;
-    display:block;
-  }
-  /* Celulares baixos: foto mais estreita para as opções aparecerem sem rolar */
-  @media (max-height:620px){
-    .slide{aspect-ratio:3/1;}
-    h1{font-size:23px;}
-  }
-  .dots{
-    display:flex;
-    justify-content:center;
-    gap:6px;
-    padding:8px 0 0;
-  }
-  .dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:var(--creme-escuro);
-    transition:.25s ease;
-    cursor:pointer;
-  }
-  .dot.ativo{
-    background:var(--dourado);
-    width:16px;
-    border-radius:4px;
-  }
-  .prova-social{
-    text-align:center;
-    font-size:12.5px;
-    color:var(--marrom-claro);
-    font-weight:500;
-    margin-top:14px;
-  }
-
-  /* Campanha de Natal: faixa e pop-up */
-  .faixa-natal{
+  .btn{
     display:block;
     width:100%;
-    margin:0 0 14px;
-    padding:9px 12px;
-    border:1px solid rgba(185,145,79,0.35);
-    border-radius:10px;
-    background:#fbf3e3;
-    font-family:'Jost', sans-serif;
-    font-size:13px;
-    font-weight:500;
-    color:var(--marrom);
-    cursor:pointer;
-    text-align:center;
-  }
-  .faixa-natal[hidden]{display:none;}
-  .faixa-natal u{color:var(--dourado); text-underline-offset:2px;}
-
-  .natal-modal{
-    position:fixed;
-    inset:0;
-    z-index:2147483647;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
-    background:rgba(60,48,36,0.55);
-    animation:fadeIn .25s ease;
-  }
-  .natal-modal[hidden]{display:none;}
-  .natal-caixa{
-    position:relative;
-    width:100%;
-    max-width:400px;
-    max-height:calc(100vh - 32px);
-    overflow:auto;
-    background:var(--branco);
-    border-radius:20px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.25);
-    text-align:center;
-  }
-  .natal-caixa img{
-    display:block;
-    width:100%;
-    aspect-ratio:4/3;
-    object-fit:cover;
-  }
-  .natal-corpo{padding:20px 22px 22px;}
-  .natal-corpo h2{
-    font-family:'Cormorant Garamond', serif;
-    font-size:25px;
-    font-weight:600;
-    line-height:1.2;
-    color:var(--marrom);
-    margin-bottom:10px;
-  }
-  .natal-corpo p{font-size:14.5px; line-height:1.55; color:#6b5d4d; margin-bottom:16px;}
-  .natal-fechar{
-    position:absolute;
-    top:10px;
-    right:10px;
-    width:40px;
-    height:40px;
-    border-radius:50%;
+    min-height:50px;
+    margin-top:6px;
+    padding:13px 18px;
+    background:var(--vinho);
     border:none;
-    background:rgba(255,253,250,0.95);
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
-    font-size:22px;
-    line-height:1;
-    color:var(--marrom);
+    border-radius:10px;
+    color:#fff;
+    font-family:'Jost', system-ui, sans-serif;
+    font-size:16px;
+    font-weight:600;
     cursor:pointer;
   }
-  .natal-secundario{
+  .btn:hover:not(:disabled){background:var(--vinho-escuro);}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .btn:active:not(:disabled){transform:scale(0.99);}
+
+  .apoio-botao{
+    text-align:center;
+    font-size:14px;
+    color:var(--texto-suave);
     margin-top:10px;
+  }
+  .aviso-privacidade{
+    text-align:center;
+    font-size:12px;
+    line-height:1.5;
+    color:#9A877A;
+    margin-top:10px;
+  }
+  .aviso-privacidade a{color:var(--texto-suave);}
+
+  .voltar{
+    display:block;
+    min-height:44px;
+    margin:10px auto 0;
+    padding:0 12px;
     background:none;
     border:none;
-    font-family:'Jost', sans-serif;
+    font-family:'Jost', system-ui, sans-serif;
     font-size:14px;
-    color:var(--marrom-claro);
+    color:var(--texto-suave);
     text-decoration:underline;
     cursor:pointer;
+  }
+
+  .rodape{
+    text-align:center;
+    margin-top:22px;
+    font-size:12px;
+    line-height:1.6;
+    color:#9A877A;
+  }
+  .rodape a{color:inherit;}
+
+  @media (min-width:600px){
+    body{padding-top:32px;}
+    h1{font-size:32px;}
   }
 </style>
 </head>
@@ -460,317 +332,336 @@ fbq('track', 'PageView');
 
 <div class="wrap">
 
-  <div class="progresso">
+  <header class="assinatura">
+    <div class="assinatura-nome">Andressa Pratez Fotografia</div>
+    <div class="assinatura-local">Santo Amaro, São Paulo</div>
+  </header>
+
+  <div class="progresso" id="progresso" hidden>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="etapa-label" id="etapaLabel" aria-live="polite">Etapa 1 de 3</span>
+    <span class="etapa-label" id="etapaLabel" aria-live="polite"></span>
   </div>
 
-  <div class="card">
+  <!-- ETAPA 1: escolha do ensaio -->
+  <section class="step active" data-step="1">
+    <img class="foto foto-abertura" src="img/familia-1.jpg" alt="Mãe e filho rindo juntos em ensaio de família da Andressa Pratez" fetchpriority="high">
+    <h1 tabindex="-1">Fotos para lembrar de como era viver essa fase.</h1>
+    <p class="apoio">Da espera pelo bebê aos abraços em família. Ensaios feitos com calma, no seu tempo.</p>
 
-    <!-- ETAPA 1: Intro / Tipo de ensaio -->
-    <div class="step active" data-step="1">
-      <div class="carrossel-wrap">
-        <div class="carrossel" id="carrossel">
-          <div class="slide"><img src="img/gestante-1.jpg" alt="Ensaio de gestante com tecido esvoaçante, por Andressa Pratez"></div>
-          <div class="slide"><img src="img/gestante-2.jpg" alt="Ensaio de gestante em tons claros, por Andressa Pratez" loading="lazy"></div>
-          <div class="slide"><img src="img/gestante-3.jpg" alt="Detalhe da barriga de gestante com flores, por Andressa Pratez" loading="lazy"></div>
-          <div class="slide"><img src="img/bebe-1.jpg" alt="Bebê sorrindo em ensaio, por Andressa Pratez" loading="lazy"></div>
-          <div class="slide"><img src="img/familia-1.jpg" alt="Mãe e filho abraçados em ensaio de família, por Andressa Pratez" loading="lazy"></div>
-          <div class="slide"><img src="img/gestante-4.jpg" alt="Gestante sorrindo em ensaio de estúdio, por Andressa Pratez" loading="lazy"></div>
-          <div class="slide"><img src="img/newborn-1.jpg" alt="Pais com o bebê recém-nascido no colo, por Andressa Pratez" loading="lazy"></div>
-        </div>
-        <div class="dots" id="dots"></div>
-      </div>
-
-      <button type="button" class="faixa-natal" id="faixaNatal" hidden>🎄 Nosso cenário de Natal já está disponível. <u>Conheça!</u></button>
-
-      <div class="eyebrow">Andressa Pratez Fotografia</div>
-      <h1 tabindex="-1">Seu ensaio de gestante, newborn ou família, <em>com calma e carinho</em></h1>
-      <span class="local">📍 Santo Amaro • São Paulo</span>
-      <p class="sub">Escolha seu ensaio e responda algumas perguntas rápidas para conversar com a Andressa.</p>
-
-      <div class="opcoes" id="opcoesTipo">
-        <button type="button" class="opcao" data-valor="Gestante"><span class="emoji">🤰</span>Ensaio de Gestante</button>
-        <button type="button" class="opcao" data-valor="Newborn"><span class="emoji">👶</span>Ensaio Newborn</button>
-        <button type="button" class="opcao" data-valor="Família"><span class="emoji">❤️</span>Ensaio em Família / Outro</button>
-        <button type="button" class="opcao" data-valor="Natal" hidden><span class="emoji">🎄</span>Ensaio de Natal</button>
-      </div>
-
-      <p class="prova-social">💛 Mais de 5 mil pessoas acompanham o trabalho da Andressa</p>
+    <h2 class="chamada">Qual fase você quer guardar?</h2>
+    <div class="opcoes" id="opcoesTipo">
+      <button type="button" class="opcao" data-valor="Gestante">
+        <span class="opcao-icone" aria-hidden="true">🤍</span>
+        <span class="opcao-texto"><span class="opcao-titulo">Gestante</span><span class="opcao-sub">A espera pelo bebê</span></span>
+        <span class="opcao-seta" aria-hidden="true">›</span>
+      </button>
+      <button type="button" class="opcao" data-valor="Newborn">
+        <span class="opcao-icone" aria-hidden="true">👶</span>
+        <span class="opcao-texto"><span class="opcao-titulo">Newborn</span><span class="opcao-sub">Os primeiros dias</span></span>
+        <span class="opcao-seta" aria-hidden="true">›</span>
+      </button>
+      <button type="button" class="opcao" data-valor="Família">
+        <span class="opcao-icone" aria-hidden="true">🏡</span>
+        <span class="opcao-texto"><span class="opcao-titulo">Família</span><span class="opcao-sub">Memórias juntos</span></span>
+        <span class="opcao-seta" aria-hidden="true">›</span>
+      </button>
     </div>
 
-    <!-- ETAPA 2A: Gestante - semanas -->
-    <div class="step" data-step="2a">
-      <div class="resumo-slot"></div>
-      <h1 tabindex="-1">Com quantas <em>semanas</em> você está hoje?</h1>
-      <p class="sub">Isso ajuda a Andressa a planejar com você a melhor época para o ensaio 💛</p>
+    <button type="button" class="faixa-natal" id="faixaNatal" data-valor="Natal" hidden>
+      <span class="opcao-icone" aria-hidden="true">🎄</span>
+      <span class="opcao-texto"><span class="opcao-titulo">Memórias de Natal</span><span class="opcao-sub">Nosso cenário de Natal já está pronto</span></span>
+      <span class="opcao-seta" aria-hidden="true">›</span>
+    </button>
 
-      <div class="opcoes" id="opcoesSemanas">
-        <button type="button" class="opcao" data-valor="menos de 20 semanas" data-msg="estou com menos de 20 semanas">Menos de 20 semanas</button>
-        <button type="button" class="opcao" data-valor="entre 20 e 26 semanas" data-msg="estou entre 20 e 26 semanas">Entre 20 e 26 semanas</button>
-        <button type="button" class="opcao" data-valor="entre 27 e 33 semanas" data-msg="estou entre 27 e 33 semanas">Entre 27 e 33 semanas</button>
-        <button type="button" class="opcao" data-valor="34 semanas ou mais" data-msg="estou com 34 semanas ou mais">34 semanas ou mais</button>
-      </div>
-      <button type="button" class="voltar" data-voltar="1">← Voltar</button>
+    <!-- Retrato de apresentação ou depoimento real (preenchido em APRESENTACAO no script) -->
+    <blockquote class="apresentacao" id="apresentacao" hidden></blockquote>
+  </section>
+
+  <!-- ETAPA 2A: Gestante -->
+  <section class="step" data-step="2a">
+    <img class="foto foto-etapa" src="img/gestante-1.jpg" alt="Gestante em ensaio da Andressa Pratez" loading="lazy">
+    <h1 tabindex="-1">Com quantas semanas você está hoje?</h1>
+    <p class="apoio">Assim eu consigo te orientar sobre a melhor época para o seu ensaio.</p>
+    <div class="opcoes" id="opcoesSemanas">
+      <button type="button" class="opcao" data-valor="menos de 20 semanas" data-msg="Estou com menos de 20 semanas"><span class="opcao-texto"><span class="opcao-titulo">Menos de 20 semanas</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="entre 20 e 26 semanas" data-msg="Estou entre 20 e 26 semanas"><span class="opcao-texto"><span class="opcao-titulo">Entre 20 e 26 semanas</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="entre 27 e 33 semanas" data-msg="Estou entre 27 e 33 semanas"><span class="opcao-texto"><span class="opcao-titulo">Entre 27 e 33 semanas</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="34 semanas ou mais" data-msg="Estou com 34 semanas ou mais"><span class="opcao-texto"><span class="opcao-titulo">34 semanas ou mais</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
     </div>
+    <button type="button" class="voltar" data-voltar>← Voltar</button>
+  </section>
 
-    <!-- ETAPA 2B: Newborn -->
-    <div class="step" data-step="2b">
-      <div class="resumo-slot"></div>
-      <h1 tabindex="-1">Seu bebê <em>já nasceu</em> ou está pra nascer?</h1>
-      <p class="sub">Os primeiros dias de vida costumam ser os mais indicados para o newborn. Se o seu bebê já passou dessa fase, conte pra gente: vamos conversar sobre as opções.</p>
-
-      <div class="opcoes" id="opcoesNewborn">
-        <button type="button" class="opcao" data-valor="bebê já nasceu" data-msg="o bebê já nasceu">Já nasceu</button>
-        <button type="button" class="opcao" data-valor="ainda não nasceu, mas tenho data prevista" data-msg="o bebê ainda não nasceu, mas tenho data prevista">Ainda não nasceu (tenho data prevista)</button>
-      </div>
-      <button type="button" class="voltar" data-voltar="1">← Voltar</button>
+  <!-- ETAPA 2B: Newborn -->
+  <section class="step" data-step="2b">
+    <img class="foto foto-etapa" src="img/newborn-1.jpg" alt="Pais com o bebê recém-nascido no colo, por Andressa Pratez" loading="lazy">
+    <h1 tabindex="-1">Seu bebê já nasceu?</h1>
+    <p class="apoio">Me conta em que fase vocês estão para eu te mostrar as opções.</p>
+    <div class="opcoes" id="opcoesNewborn">
+      <button type="button" class="opcao" data-valor="bebê já nasceu" data-msg="Meu bebê já nasceu"><span class="opcao-texto"><span class="opcao-titulo">Já nasceu</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="ainda não nasceu, mas tenho data prevista" data-msg="Meu bebê ainda não nasceu, mas já tenho data prevista"><span class="opcao-texto"><span class="opcao-titulo">Ainda não nasceu</span><span class="opcao-sub">Tenho data prevista</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
     </div>
+    <button type="button" class="voltar" data-voltar>← Voltar</button>
+  </section>
 
-    <!-- ETAPA 2C: Família -->
-    <div class="step" data-step="2c">
-      <div class="resumo-slot"></div>
-      <h1 tabindex="-1">Quando você gostaria <em>de fazer</em> o ensaio?</h1>
-
-      <div class="opcoes" id="opcoesFamilia">
-        <button type="button" class="opcao" data-valor="esse mês" data-msg="gostaria de fazer ainda este mês">Esse mês</button>
-        <button type="button" class="opcao" data-valor="nos próximos 2 a 3 meses" data-msg="gostaria de fazer nos próximos 2 a 3 meses">Próximos 2 a 3 meses</button>
-        <button type="button" class="opcao" data-valor="só pesquisando por enquanto" data-msg="estou só pesquisando por enquanto">Só pesquisando por enquanto</button>
-      </div>
-      <button type="button" class="voltar" data-voltar="1">← Voltar</button>
+  <!-- ETAPA 2C: Família -->
+  <section class="step" data-step="2c">
+    <img class="foto foto-etapa" src="img/familia-1.jpg" alt="Mãe e filho abraçados em ensaio de família, por Andressa Pratez" loading="lazy">
+    <h1 tabindex="-1">Quando você gostaria de fazer o ensaio?</h1>
+    <div class="opcoes" id="opcoesFamilia" style="margin-top:14px">
+      <button type="button" class="opcao" data-valor="esse mês" data-msg="Gostaria de fazer neste mês"><span class="opcao-texto"><span class="opcao-titulo">Neste mês</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="nos próximos 2 a 3 meses" data-msg="Gostaria de fazer nos próximos 2 a 3 meses"><span class="opcao-texto"><span class="opcao-titulo">Nos próximos 2 a 3 meses</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="só pesquisando por enquanto" data-msg="Ainda estou pesquisando"><span class="opcao-texto"><span class="opcao-titulo">Ainda estou pesquisando</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
     </div>
+    <button type="button" class="voltar" data-voltar>← Voltar</button>
+  </section>
 
-    <!-- ETAPA 2D: Natal -->
-    <div class="step" data-step="2d">
-      <div class="resumo-slot"></div>
-      <h1 tabindex="-1">Quem vai participar do <em>ensaio de Natal</em>?</h1>
-
-      <div class="opcoes" id="opcoesNatal">
-        <button type="button" class="opcao" data-valor="casal" data-msg="para o casal">Casal</button>
-        <button type="button" class="opcao" data-valor="família com filhos" data-msg="para a família com os filhos">Família com filhos</button>
-        <button type="button" class="opcao" data-valor="família maior" data-msg="para uma família maior (avós, tios, primos)">Família maior (avós, tios, primos)</button>
-      </div>
-      <button type="button" class="voltar" data-voltar="1">← Voltar</button>
+  <!-- ETAPA 2D: Memórias de Natal -->
+  <section class="step natal" data-step="2d">
+    <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto (pendente) -->
+    <img class="foto foto-etapa" id="natalFoto" alt="Cenário de Natal no estúdio da Andressa Pratez" hidden>
+    <h1 tabindex="-1">Memórias de Natal</h1>
+    <p class="apoio">Um tempo gostoso em família, com abraços, brincadeiras e fotos pra guardar.</p>
+    <p class="linha-pacote" id="natalPacote" hidden></p>
+    <h2 class="chamada">Quem vem para as fotos?</h2>
+    <div class="opcoes" id="opcoesNatal">
+      <button type="button" class="opcao" data-valor="casal" data-msg="Vamos participar em casal"><span class="opcao-texto"><span class="opcao-titulo">Casal</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="família com filhos" data-msg="Vamos participar em família com filhos"><span class="opcao-texto"><span class="opcao-titulo">Família com filhos</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="família maior" data-msg="Vamos participar em uma família maior, com avós, tios e primos"><span class="opcao-texto"><span class="opcao-titulo">Família maior</span><span class="opcao-sub">Avós, tios, primos</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
     </div>
+    <button type="button" class="voltar" data-voltar>← Voltar</button>
+  </section>
 
-    <!-- ETAPA 3: Contato (final, comum a todos os caminhos) -->
-    <div class="step" data-step="3">
-      <h1 tabindex="-1">Como podemos <em>falar com você</em>?</h1>
-
-      <div id="resumoFinal"></div>
-      <div id="notaCondicional"></div>
-
-      <input type="text" class="campo" id="inputNome" placeholder="Seu primeiro nome" aria-label="Seu primeiro nome" autocomplete="given-name" required>
-      <input type="tel" class="campo" id="inputTelefone" placeholder="WhatsApp com DDD: (11) 91234-5678" aria-label="WhatsApp com DDD" inputmode="numeric" autocomplete="tel-national" maxlength="15" required>
-
-      <label class="consentimento-saude" id="consentimentoSaude" hidden>
-        <input type="checkbox" id="checkSaude">
-        <span>Autorizo o uso das minhas respostas sobre saúde somente para o meu atendimento.</span>
-      </label>
-
-      <p class="explica">Ao continuar, você será direcionado ao WhatsApp para consultar datas e conhecer as opções. O agendamento será combinado no atendimento.</p>
-      <button class="btn" id="btnEnviar" disabled>Falar com a Andressa no WhatsApp</button>
-      <p class="aviso-privacidade">Ao continuar, você concorda em ser contatado pelo WhatsApp. Veja a <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>.</p>
-      <button type="button" class="voltar" id="voltarStep3">← Voltar</button>
+  <!-- ETAPA 3: preferência de quantidade de fotos (todos os ensaios) -->
+  <section class="step" data-step="fotos">
+    <h1 tabindex="-1">Quantas fotos você gostaria de receber do seu ensaio?</h1>
+    <p class="apoio">Escolha o que mais combina com você. Isso me ajuda a te mostrar as opções de pacote.</p>
+    <div class="opcoes" id="opcoesFotos">
+      <button type="button" class="opcao" data-valor="galeria maior" data-resumo="20 a 35 fotos ou mais" data-msg="prefiro receber de 20 a 35 fotos ou mais"><span class="opcao-texto"><span class="opcao-titulo">Prefiro uma galeria maior</span><span class="opcao-sub">20 a 35 fotos ou mais</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="seleção menor" data-resumo="10 a 15 fotos" data-msg="prefiro uma seleção menor, de 10 a 15 fotos"><span class="opcao-texto"><span class="opcao-titulo">Prefiro uma seleção menor</span><span class="opcao-sub">10 a 15 fotos</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
+      <button type="button" class="opcao" data-valor="ainda não sei" data-resumo="Quero conhecer as opções" data-msg=""><span class="opcao-texto"><span class="opcao-titulo">Ainda não sei</span><span class="opcao-sub">Quero conhecer as opções primeiro</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
     </div>
+    <button type="button" class="voltar" id="voltarFotos">← Voltar</button>
+  </section>
 
-  </div>
+  <!-- ETAPA 4: contato -->
+  <section class="step" data-step="contato">
+    <h1 tabindex="-1">Vamos conversar sobre seu ensaio?</h1>
+    <p class="resumo-respostas" id="resumoRespostas"></p>
+    <div class="nota" id="notaCondicional"></div>
 
-  <p class="rodape-confianca">Andressa Pratez Fotografia · Santo Amaro, São Paulo · <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a></p>
-</div>
+    <input type="text" class="campo" id="inputNome" placeholder="Seu primeiro nome" aria-label="Seu primeiro nome" autocomplete="given-name" required>
+    <input type="tel" class="campo" id="inputTelefone" placeholder="WhatsApp com DDD" aria-label="WhatsApp com DDD" inputmode="numeric" autocomplete="tel-national" maxlength="15" required>
 
-<!-- Pop-up da campanha de Natal (só aparece com a campanha ativa e foto real configurada) -->
-<div class="natal-modal" id="natalModal" role="dialog" aria-modal="true" aria-labelledby="natalTitulo" hidden>
-  <div class="natal-caixa">
-    <button type="button" class="natal-fechar" id="natalFechar" aria-label="Fechar">×</button>
-    <img id="natalFoto" alt="">
-    <div class="natal-corpo">
-      <h2 id="natalTitulo">O Natal da sua família merece virar lembrança</h2>
-      <p>Nosso cenário de Natal já está pronto para receber vocês. Conheça as opções e consulte as datas disponíveis.</p>
-      <button type="button" class="btn" id="natalCta">Quero meu ensaio de Natal</button>
-      <button type="button" class="natal-secundario" id="natalContinuar">Continuar vendo os ensaios</button>
-    </div>
-  </div>
+    <label class="consentimento-saude" id="consentimentoSaude" hidden>
+      <input type="checkbox" id="checkSaude">
+      <span>Autorizo o uso das minhas respostas sobre saúde somente para o meu atendimento.</span>
+    </label>
+
+    <button class="btn" id="btnEnviar" disabled>Continuar no WhatsApp</button>
+    <p class="apoio-botao">Vou te passar as opções e conferir as datas com você.</p>
+    <p class="aviso-privacidade">Ao continuar, você concorda em ser contatado pelo WhatsApp. Veja a <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>.</p>
+    <button type="button" class="voltar" id="voltarContato">← Voltar</button>
+  </section>
+
+  <footer class="rodape">
+    Andressa Pratez Fotografia · Santo Amaro, São Paulo<br>
+    <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>
+  </footer>
 </div>
 
 <script>
   const WHATSAPP_NUMERO = "5511964460083";
 
-  // Ensaios: nome exibido, etapa da pergunta e foto real usada no resumo
+  // Ensaios: nome no resumo, nome na mensagem do WhatsApp e etapa da pergunta específica
   const ENSAIOS = {
-    'Gestante': { nome: 'Ensaio de Gestante', etapa: '2a', foto: 'img/gestante-1.jpg', fotoAlt: 'Ensaio de gestante por Andressa Pratez' },
-    'Newborn':  { nome: 'Ensaio Newborn',     etapa: '2b', foto: 'img/newborn-1.jpg',  fotoAlt: 'Ensaio newborn por Andressa Pratez' },
-    'Família':  { nome: 'Ensaio em Família',  etapa: '2c', foto: 'img/familia-1.jpg',  fotoAlt: 'Ensaio em família por Andressa Pratez' },
-    'Natal':    { nome: 'Ensaio de Natal',    etapa: '2d', foto: null,                 fotoAlt: 'Cenário de Natal do estúdio Andressa Pratez' }
+    'Gestante': { nome: 'Ensaio de Gestante', nomeMsg: 'no ensaio de gestante', etapa: '2a', opcoes: '#opcoesSemanas' },
+    'Newborn':  { nome: 'Ensaio Newborn',     nomeMsg: 'no ensaio newborn',     etapa: '2b', opcoes: '#opcoesNewborn' },
+    'Família':  { nome: 'Ensaio em Família',  nomeMsg: 'no ensaio em família',  etapa: '2c', opcoes: '#opcoesFamilia' },
+    'Natal':    { nome: 'Memórias de Natal',  nomeMsg: 'no ensaio Memórias de Natal', etapa: '2d', opcoes: '#opcoesNatal' }
   };
 
   /*
-   * Campanha de Natal. "ativa: false" tira a categoria, a faixa e o pop-up.
-   * A faixa e o pop-up só aparecem com uma foto real do cenário em "foto"
-   * (ex.: "img/natal-cenario.jpg").
+   * Memórias de Natal. "ativa: false" tira a faixa da primeira tela.
+   * foto: arquivo original do cenário (ex.: "img/natal-cenario.jpg") — pendente.
+   * pacote: linha opcional antes da pergunta, só com valor e itens confirmados
+   *         (ex.: "A partir de R$ X · 15 fotos editadas"). Vazia = oculta.
    */
   const CAMPANHA_NATAL = {
     ativa: true,
     foto: null,
-    popupAposMs: 7000
+    pacote: ''
   };
 
-  function natalComDestaque(){
-    return CAMPANHA_NATAL.ativa && !!CAMPANHA_NATAL.foto;
-  }
+  // Retrato curto da Andressa ou depoimento real aprovado. Vazio = oculto.
+  // Ex.: { texto: '“...”', autoria: 'Nome, mãe do Fulano' }
+  const APRESENTACAO = null;
 
-  function el(tag, classe, texto){
-    const n = document.createElement(tag);
-    if(classe) n.className = classe;
-    if(texto) n.textContent = texto;
-    return n;
-  }
+  // Entrada direta pelos anúncios: ?ensaio=natal (ou gestante, newborn, familia)
+  const ENTRADA_DIRETA = { natal: 'Natal', gestante: 'Gestante', newborn: 'Newborn', familia: 'Família', 'família': 'Família' };
 
-  // Resumo do ensaio: com foto na etapa 2, compacto (com a resposta) na etapa 3
-  function montarResumo(container, tipo, compacto, detalheTexto){
-    container.innerHTML = '';
-    const e = ENSAIOS[tipo];
-    if(!e) return;
-    const box = el('div', 'resumo' + (compacto ? ' compacto' : ''));
-    if(e.foto && !compacto){
-      const img = el('img');
-      img.src = e.foto;
-      img.alt = e.fotoAlt;
-      box.appendChild(img);
-    }
-    const info = el('div', 'resumo-info');
-    info.appendChild(el('div', 'resumo-nome', e.nome));
-    if(detalheTexto) info.appendChild(el('div', 'resumo-detalhe', detalheTexto));
-    box.appendChild(info);
-    container.appendChild(box);
-  }
-
-  if(CAMPANHA_NATAL.ativa) document.querySelector('#opcoesTipo [data-valor="Natal"]').hidden = false;
-
-  // Carrossel: gera os dots e atualiza o ativo no scroll
-  (function(){
-    const carrossel = document.getElementById('carrossel');
-    const dotsWrap = document.getElementById('dots');
-    const slides = carrossel.querySelectorAll('.slide');
-
-    slides.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'dot' + (i === 0 ? ' ativo' : '');
-      dot.addEventListener('click', () => {
-        carrossel.scrollTo({ left: i * carrossel.clientWidth, behavior: 'smooth' });
-      });
-      dotsWrap.appendChild(dot);
-    });
-    const dots = dotsWrap.querySelectorAll('.dot');
-
-    carrossel.addEventListener('scroll', () => {
-      const index = Math.round(carrossel.scrollLeft / carrossel.clientWidth);
-      dots.forEach((d, i) => d.classList.toggle('ativo', i === index));
-    });
-
-    // Autoplay leve (pausa se o usuário interagir)
-    let auto = setInterval(() => {
-      const next = (Math.round(carrossel.scrollLeft / carrossel.clientWidth) + 1) % slides.length;
-      carrossel.scrollTo({ left: next * carrossel.clientWidth, behavior: 'smooth' });
-    }, 3200);
-    carrossel.addEventListener('pointerdown', () => clearInterval(auto));
-  })();
-
-  const respostas = {
-    tipo: null,
-    detalhe: null,
-    detalheMsg: null,
-    detalheTexto: null
-  };
+  const respostas = { tipo: null, detalhe: null, detalheMsg: null, detalheTexto: null, fotos: null, fotosResumo: null, fotosMsg: null, fotosTexto: null };
   let etapaAtual = '1';
-  let fluxoIniciado = false;
 
+  // --- Natal e apresentação -------------------------------------------------
+  const faixaNatal = document.getElementById('faixaNatal');
+  faixaNatal.hidden = !CAMPANHA_NATAL.ativa;
+  if(CAMPANHA_NATAL.foto){
+    const natalFoto = document.getElementById('natalFoto');
+    natalFoto.src = CAMPANHA_NATAL.foto;
+    natalFoto.hidden = false;
+  }
+  if(CAMPANHA_NATAL.pacote){
+    const linha = document.getElementById('natalPacote');
+    linha.textContent = CAMPANHA_NATAL.pacote;
+    linha.hidden = false;
+  }
+  if(APRESENTACAO && APRESENTACAO.texto){
+    const ap = document.getElementById('apresentacao');
+    ap.textContent = APRESENTACAO.texto;
+    if(APRESENTACAO.autoria){
+      const cite = document.createElement('cite');
+      cite.textContent = APRESENTACAO.autoria;
+      ap.appendChild(cite);
+    }
+    ap.hidden = false;
+  }
+
+  // --- Navegação ------------------------------------------------------------
   const steps = document.querySelectorAll('.step');
+  const progresso = document.getElementById('progresso');
   const progressFill = document.getElementById('progressFill');
   const etapaLabel = document.getElementById('etapaLabel');
 
-  function irPara(stepId){
+  function numeroEtapa(stepId){
+    if(stepId === '1') return 1;
+    if(stepId === 'fotos') return 3;
+    if(stepId === 'contato') return 4;
+    return 2;
+  }
+
+  function irPara(stepId, opcoes){
+    const historico = (opcoes && opcoes.historico) || 'push';
     etapaAtual = stepId;
     steps.forEach(s => s.classList.remove('active'));
     const step = document.querySelector('[data-step="' + stepId + '"]');
     step.classList.add('active');
-    const numero = stepId === '1' ? 1 : stepId === '3' ? 3 : 2;
-    progressFill.style.width = [33, 66, 100][numero - 1] + '%';
-    etapaLabel.textContent = 'Etapa ' + numero + ' de 3';
-    window.scrollTo({top:0, behavior:'smooth'});
-    if(stepId !== '1') step.querySelector('h1').focus({ preventScroll: true });
+    const numero = numeroEtapa(stepId);
+    progresso.hidden = numero === 1;
+    progressFill.style.width = (numero / 4 * 100) + '%';
+    etapaLabel.textContent = 'Etapa ' + numero + ' de 4';
+    // Botão "voltar" do celular volta uma etapa (a URL e as UTMs não mudam)
+    try {
+      const atual = (history.state && history.state.i) || 0;
+      if(historico === 'push') history.pushState({ etapa: stepId, i: atual + 1 }, '');
+      else if(historico === 'replace') history.replaceState({ etapa: stepId, i: atual }, '');
+    } catch(e){}
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(numero > 1) step.querySelector('h1').focus({ preventScroll: true });
   }
 
-  // ETAPA 1 -> escolhe tipo de ensaio
+  function etapaValida(stepId){
+    if(stepId === '1') return true;
+    if(!respostas.tipo) return false;
+    if(stepId === ENSAIOS[respostas.tipo].etapa) return true;
+    if(stepId === 'fotos') return !!respostas.detalhe;
+    if(stepId === 'contato') return !!respostas.detalhe && !!respostas.fotos;
+    return false;
+  }
+  window.addEventListener('popstate', e => {
+    const alvo = e.state && e.state.etapa;
+    irPara(alvo && etapaValida(alvo) ? alvo : '1', { historico: 'none' });
+  });
+
+  // "Voltar" da página = voltar do navegador, para os dois andarem juntos
+  function voltarPara(stepId){
+    if(history.state && history.state.i > 0) history.back();
+    else irPara(stepId, { historico: 'replace' });
+  }
+
+  function marcar(seletor, botao){
+    document.querySelectorAll(seletor + ' .opcao').forEach(o => o.classList.toggle('selecionada', o === botao));
+  }
+
+  // ETAPA 1 -> escolhe o ensaio
   function escolherTipo(tipo){
-    fluxoIniciado = true;
-    document.querySelectorAll('#opcoesTipo .opcao').forEach(o => o.classList.toggle('selecionada', o.dataset.valor === tipo));
     if(respostas.tipo !== tipo){
-      respostas.detalhe = null;
-      respostas.detalheMsg = null;
-      respostas.detalheTexto = null;
+      // Troca de ensaio: a pergunta específica anterior deixa de valer
+      Object.values(ENSAIOS).forEach(e => document.querySelectorAll(e.opcoes + ' .opcao').forEach(o => o.classList.remove('selecionada')));
+      respostas.detalhe = respostas.detalheMsg = respostas.detalheTexto = null;
     }
     respostas.tipo = tipo;
-    const etapa = ENSAIOS[tipo].etapa;
-    montarResumo(document.querySelector('[data-step="' + etapa + '"] .resumo-slot'), tipo, false);
-    return etapa;
+    document.querySelectorAll('#opcoesTipo .opcao').forEach(o => o.classList.toggle('selecionada', o.dataset.valor === tipo));
+    return ENSAIOS[tipo].etapa;
   }
-  document.querySelectorAll('#opcoesTipo .opcao').forEach(op => {
+  document.querySelectorAll('#opcoesTipo .opcao, #faixaNatal').forEach(op => {
     op.addEventListener('click', () => {
       const etapa = escolherTipo(op.dataset.valor);
-      setTimeout(() => irPara(etapa), 220);
+      setTimeout(() => irPara(etapa), 150);
     });
   });
 
-  // ETAPA 2 -> escolhe detalhe -> vai pro contato
-  function configurarDetalhe(seletor){
-    document.querySelectorAll(seletor + ' .opcao').forEach(op => {
+  // ETAPA 2 -> pergunta específica -> preferência de fotos
+  Object.values(ENSAIOS).forEach(e => {
+    document.querySelectorAll(e.opcoes + ' .opcao').forEach(op => {
       op.addEventListener('click', () => {
-        document.querySelectorAll(seletor + ' .opcao').forEach(o => o.classList.remove('selecionada'));
-        op.classList.add('selecionada');
+        marcar(e.opcoes, op);
         respostas.detalhe = op.dataset.valor;
         respostas.detalheMsg = op.dataset.msg;
-        respostas.detalheTexto = op.textContent.trim();
-        montarResumo(document.getElementById('resumoFinal'), respostas.tipo, true, respostas.detalheTexto);
-        montarNotaCondicional();
-        setTimeout(() => irPara('3'), 220);
+        respostas.detalheTexto = op.querySelector('.opcao-titulo').textContent.trim();
+        setTimeout(() => irPara('fotos'), 150);
       });
     });
-  }
-  configurarDetalhe('#opcoesSemanas');
-  configurarDetalhe('#opcoesNewborn');
-  configurarDetalhe('#opcoesFamilia');
-  configurarDetalhe('#opcoesNatal');
-
-  // Botões de voltar
-  document.querySelectorAll('[data-voltar]').forEach(btn => {
-    btn.addEventListener('click', () => irPara(btn.dataset.voltar));
-  });
-  document.getElementById('voltarStep3').addEventListener('click', () => {
-    irPara(ENSAIOS[respostas.tipo] ? ENSAIOS[respostas.tipo].etapa : '1');
   });
 
-  // Nota condicional (planejamento pelas semanas de gestação)
-  function montarNotaCondicional(){
-    const nota = document.getElementById('notaCondicional');
-    nota.innerHTML = '';
+  // ETAPA 3 -> preferência de fotos -> contato
+  document.querySelectorAll('#opcoesFotos .opcao').forEach(op => {
+    op.addEventListener('click', () => {
+      marcar('#opcoesFotos', op);
+      respostas.fotos = op.dataset.valor;
+      respostas.fotosResumo = op.dataset.resumo;
+      respostas.fotosMsg = op.dataset.msg;
+      respostas.fotosTexto = op.querySelector('.opcao-titulo').textContent.trim() + ' (' + op.querySelector('.opcao-sub').textContent.trim() + ')';
+      montarContato();
+      setTimeout(() => irPara('contato'), 150);
+    });
+  });
+
+  // Voltar
+  document.querySelectorAll('[data-voltar]').forEach(btn => btn.addEventListener('click', () => voltarPara('1')));
+  document.getElementById('voltarFotos').addEventListener('click', () => voltarPara(respostas.tipo ? ENSAIOS[respostas.tipo].etapa : '1'));
+  document.getElementById('voltarContato').addEventListener('click', () => voltarPara('fotos'));
+
+  // --- Tela de contato --------------------------------------------------------
+  function montarContato(){
+    document.getElementById('resumoRespostas').textContent =
+      [ENSAIOS[respostas.tipo].nome, respostas.detalheTexto, respostas.fotosResumo].filter(Boolean).join(' · ');
 
     // Gestação e nascimento = dado de saúde: só vai pro Lead Hub com autorização
     document.getElementById('consentimentoSaude').hidden = respostas.tipo !== 'Gestante' && respostas.tipo !== 'Newborn';
 
+    const nota = document.getElementById('notaCondicional');
+    nota.innerHTML = '';
     if(respostas.tipo === 'Gestante'){
-      let texto = '';
-      if(respostas.detalhe === 'menos de 20 semanas'){
-        texto = '<b>Dá tempo de planejar com calma.</b> A Andressa costuma recomendar o ensaio entre 27 e 33 semanas — vamos conversar para reservar uma data próxima desse período.';
-      } else if(respostas.detalhe === 'entre 20 e 26 semanas'){
-        texto = '<b>Boa fase para planejar!</b> Vamos conversar sobre as datas disponíveis dentro do período que a Andressa costuma recomendar (27 a 33 semanas).';
-      } else if(respostas.detalhe === 'entre 27 e 33 semanas'){
-        texto = '<b>Vamos conversar</b> sobre as opções e a disponibilidade para o seu ensaio.';
-      } else if(respostas.detalhe === '34 semanas ou mais'){
-        texto = '<b>Vamos conversar</b> sobre as opções e a disponibilidade para o seu ensaio. No atendimento, a Andressa te orienta sobre as datas possíveis nessa fase.';
-      }
-      nota.innerHTML = '<div class="nota">' + texto + '</div>';
+      const textos = {
+        'menos de 20 semanas': '<b>Dá tempo de planejar com calma.</b> Costumo recomendar o ensaio entre 27 e 33 semanas — vamos reservar uma data próxima desse período.',
+        'entre 20 e 26 semanas': '<b>Boa fase para planejar!</b> Vamos ver as datas dentro do período que costumo recomendar (27 a 33 semanas).',
+        'entre 27 e 33 semanas': '<b>Vamos conversar</b> sobre as opções e a disponibilidade para o seu ensaio.',
+        '34 semanas ou mais': '<b>Vamos conversar</b> sobre as opções e a disponibilidade. No atendimento eu te oriento sobre as datas possíveis nessa fase.'
+      };
+      nota.innerHTML = textos[respostas.detalhe] || '';
     }
+  }
+
+  function montarMensagem(nome){
+    const ensaio = ENSAIOS[respostas.tipo];
+    let msg = 'Oi, Andressa! Meu nome é ' + nome + '. Tenho interesse ' + ensaio.nomeMsg + '.';
+    if(respostas.fotosMsg){
+      msg += ' ' + respostas.detalheMsg + ' e ' + respostas.fotosMsg + '.';
+    } else {
+      msg += ' ' + respostas.detalheMsg + '. Quero conhecer as opções de quantidade de fotos.';
+    }
+    msg += ' Você pode me passar as opções e datas?';
+    return msg;
   }
 
   // Nome + WhatsApp -> habilita botão
@@ -811,10 +702,11 @@ fbq('track', 'PageView');
   }
 
   btnEnviar.addEventListener('click', () => {
+    if(!respostas.tipo || !respostas.detalhe || !respostas.fotos) return;
     const nome = inputNome.value.trim();
     const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
 
-    // 1) Pixel client-side (Meta dedup via eventID)
+    // 1) Pixel client-side (Meta dedup via eventID) — única conversão da página
     fbq('track', 'Lead', { content_name: 'LP Andressa Pratez - ' + respostas.tipo }, { eventID: eventId });
 
     // 2) CAPI server-side via Worker (não bloqueia o redirect)
@@ -830,35 +722,21 @@ fbq('track', 'PageView');
       })
     }).catch(()=>{});
 
-    const ensaio = ENSAIOS[respostas.tipo];
-    let mensagem = 'Oi Andressa! Meu nome é ' + nome + '. ';
-    mensagem += 'Tenho interesse no *' + ensaio.nome + '*';
-    if(respostas.detalheMsg){
-      mensagem += ', ' + respostas.detalheMsg;
-    }
-    if(respostas.tipo === 'Natal'){
-      mensagem += '. Vim pela landing page e gostaria de conhecer as opções do cenário de Natal e consultar as datas disponíveis 🎄';
-    } else {
-      mensagem += '. Vim pela landing page e gostaria de saber mais sobre disponibilidade e valores 💛';
-    }
+    const mensagem = montarMensagem(nome);
 
-    // 3) Lead Hub: contato + respostas do quiz
+    // 3) Lead Hub: contato + respostas
     const telefone = inputTelefone.value.replace(/\D/g, '');
     window.LeadHub?.identify({ name: nome, phone: telefone });
 
-    const respostasQuiz = { 'Tipo de ensaio': respostas.tipo };
+    const respostasQuiz = { 'Tipo de ensaio': respostas.tipo, 'Preferência de fotos': respostas.fotosTexto };
     if(respostas.tipo === 'Newborn'){
-      if(checkSaude.checked){
-        respostasQuiz['Bebê'] = document.querySelector('#opcoesNewborn .selecionada')?.textContent.trim();
-      }
+      if(checkSaude.checked) respostasQuiz['Bebê'] = respostas.detalheTexto;
     } else if(respostas.tipo === 'Gestante'){
-      if(checkSaude.checked){
-        respostasQuiz['Semanas de gestação'] = document.querySelector('#opcoesSemanas .selecionada')?.textContent.trim();
-      }
+      if(checkSaude.checked) respostasQuiz['Semanas de gestação'] = respostas.detalheTexto;
     } else if(respostas.tipo === 'Natal'){
-      respostasQuiz['Participantes'] = document.querySelector('#opcoesNatal .selecionada')?.textContent.trim();
+      respostasQuiz['Participantes'] = respostas.detalheTexto;
     } else {
-      respostasQuiz['Quando'] = document.querySelector('#opcoesFamilia .selecionada')?.textContent.trim();
+      respostasQuiz['Quando'] = respostas.detalheTexto;
     }
     window.LeadHub?.set(respostasQuiz);
 
@@ -867,66 +745,18 @@ fbq('track', 'PageView');
     setTimeout(() => { window.location.href = destino; }, 200);
   });
 
-  // Campanha de Natal: faixa na primeira tela + pop-up (uma vez por sessão)
+  // --- Início: seleção geral ou entrada direta (?ensaio=natal) ---------------
   (function(){
-    if(!natalComDestaque()) return;
-
-    const faixa = document.getElementById('faixaNatal');
-    const modal = document.getElementById('natalModal');
-    const foto = document.getElementById('natalFoto');
-    const fechar = document.getElementById('natalFechar');
-    let focoAnterior = null;
-
-    foto.src = CAMPANHA_NATAL.foto;
-    foto.alt = ENSAIOS['Natal'].fotoAlt;
-    faixa.hidden = false;
-
-    function abrir(){
-      focoAnterior = document.activeElement;
-      document.body.appendChild(modal); // por cima do aviso de cookies
-      modal.hidden = false;
-      document.body.classList.add('modal-aberto');
-      fechar.focus();
+    let entrada = null;
+    try { entrada = new URLSearchParams(window.location.search).get('ensaio'); } catch(e){}
+    const tipo = entrada && ENTRADA_DIRETA[entrada.toLowerCase()];
+    if(tipo && (tipo !== 'Natal' || CAMPANHA_NATAL.ativa)){
+      // A etapa 1 fica no histórico: "voltar" leva à seleção de ensaio
+      try { history.replaceState({ etapa: '1', i: 0 }, ''); } catch(e){}
+      irPara(escolherTipo(tipo));
+    } else {
+      try { history.replaceState({ etapa: '1', i: 0 }, ''); } catch(e){}
     }
-    function fecharModal(){
-      if(modal.hidden) return;
-      modal.hidden = true;
-      document.body.classList.remove('modal-aberto');
-      if(focoAnterior && focoAnterior.focus) focoAnterior.focus();
-    }
-
-    faixa.addEventListener('click', abrir);
-    fechar.addEventListener('click', fecharModal);
-    document.getElementById('natalContinuar').addEventListener('click', fecharModal);
-    modal.addEventListener('click', e => { if(e.target === modal) fecharModal(); });
-    document.getElementById('natalCta').addEventListener('click', () => {
-      fecharModal();
-      const etapa = escolherTipo('Natal');
-      irPara(etapa);
-    });
-    document.addEventListener('keydown', e => {
-      if(modal.hidden) return;
-      if(e.key === 'Escape'){ fecharModal(); return; }
-      if(e.key === 'Tab'){
-        const focaveis = modal.querySelectorAll('button');
-        const primeiro = focaveis[0], ultimo = focaveis[focaveis.length - 1];
-        if(e.shiftKey && document.activeElement === primeiro){ e.preventDefault(); ultimo.focus(); }
-        else if(!e.shiftKey && document.activeElement === ultimo){ e.preventDefault(); primeiro.focus(); }
-      }
-    });
-
-    function jaMostrou(){
-      try { return sessionStorage.getItem('lp_natal_popup') === '1'; } catch(e){ return false; }
-    }
-    function marcarMostrado(){
-      try { sessionStorage.setItem('lp_natal_popup', '1'); } catch(e){}
-    }
-    setTimeout(() => {
-      if(etapaAtual === '1' && !fluxoIniciado && !jaMostrou()){
-        marcarMostrado();
-        abrir();
-      }
-    }, CAMPANHA_NATAL.popupAposMs);
   })();
 </script>
 
