@@ -162,9 +162,21 @@ fbq('track', 'PageView');
     object-fit:cover;
     background:var(--areia);
   }
-  .foto-abertura{aspect-ratio:3/2; object-position:center 35%;}
-  @media (min-width:600px){ .foto-abertura{aspect-ratio:4/3;} }
-  .foto-etapa{aspect-ratio:16/10; object-position:center 30%;}
+  /* Fotos do topo das etapas: sempre inteiras, na proporção original (sem corte).
+     A altura é limitada para a pergunta continuar visível logo abaixo. */
+  .moldura-inteira{
+    width:fit-content;
+    max-width:100%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .foto-abertura, .foto-etapa{
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:min(64vh, 560px);
+    object-fit:contain;
+  }
   .moldura-etapa{margin-bottom:16px;}
 
   /* Boas-vindas */
@@ -185,7 +197,7 @@ fbq('track', 'PageView');
   }
   .retrato .moldura{margin:0; border-radius:18px;}
   .retrato .moldura::after{border-radius:18px;}
-  .retrato .foto{aspect-ratio:4/5; border-radius:18px; object-position:center 35%;}
+  .retrato .foto{border-radius:18px;}
   .retrato-etiqueta{
     position:absolute;
     left:50%;
@@ -517,7 +529,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 1: escolha do ensaio -->
   <section class="step" data-step="1">
-    <div class="moldura"><img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" loading="lazy"></div>
+    <div class="moldura moldura-inteira"><img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Fotos para lembrar de como era viver essa fase.</h1>
     <p class="apoio">Da espera pelo bebê aos abraços em família. Ensaios feitos com calma, no seu tempo.</p>
 
@@ -552,7 +564,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2A: Gestante -->
   <section class="step" data-step="2a">
-    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" style="object-position:center 80%" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy"></div>
+    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Com quantas semanas você está hoje?</h1>
     <p class="apoio">Assim eu consigo te orientar sobre a melhor época para o seu ensaio.</p>
     <div class="opcoes" id="opcoesSemanas">
@@ -566,7 +578,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2B: Newborn -->
   <section class="step" data-step="2b">
-    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" style="object-position:center 60%" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy"></div>
+    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Seu bebê já nasceu?</h1>
     <p class="apoio">Me conta em que fase vocês estão para eu te mostrar as opções.</p>
     <div class="opcoes" id="opcoesNewborn">
@@ -578,7 +590,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2C: Família -->
   <section class="step" data-step="2c">
-    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" style="object-position:center 35%" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy"></div>
+    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Quando você gostaria de fazer o ensaio?</h1>
     <div class="opcoes" id="opcoesFamilia" style="margin-top:14px">
       <button type="button" class="opcao" data-valor="esse mês" data-msg="Gostaria de fazer neste mês"><span class="opcao-texto"><span class="opcao-titulo">Neste mês</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
@@ -591,7 +603,7 @@ fbq('track', 'PageView');
   <!-- ETAPA 2D: Memórias de Natal -->
   <section class="step natal" data-step="2d">
     <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto -->
-    <div class="moldura moldura-etapa" id="natalMoldura" hidden><img class="foto foto-etapa" id="natalFoto" width="584" height="748" style="object-position:center 30%" alt="Mulher sorrindo com uma caneca no cenário de Natal do estúdio da Andressa Pratez"></div>
+    <div class="moldura moldura-etapa moldura-inteira" id="natalMoldura" hidden><img class="foto foto-etapa" id="natalFoto" width="584" height="748" alt="Mulher sorrindo com uma caneca no cenário de Natal do estúdio da Andressa Pratez"></div>
     <h1 tabindex="-1">Memórias de Natal</h1>
     <p class="apoio">Um tempo gostoso em família, com abraços, brincadeiras e fotos pra guardar.</p>
     <p class="linha-pacote" id="natalPacote" hidden></p>
