@@ -109,13 +109,14 @@ fbq('track', 'PageView');
   .foto{
     display:block;
     width:100%;
+    height:auto;
     border-radius:12px;
     object-fit:cover;
     background:var(--areia);
   }
   .foto-abertura{aspect-ratio:3/2; object-position:center 35%; margin-bottom:16px;}
   @media (min-width:600px){ .foto-abertura{aspect-ratio:4/3;} }
-  .foto-etapa{aspect-ratio:16/9; object-position:center 30%; margin-bottom:16px;}
+  .foto-etapa{aspect-ratio:16/10; object-position:center 30%; margin-bottom:16px;}
   .foto[hidden]{display:none;}
 
   h1{
@@ -344,7 +345,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 1: escolha do ensaio -->
   <section class="step active" data-step="1">
-    <img class="foto foto-abertura" src="img/familia-1.jpg" alt="Mãe e filho rindo juntos em ensaio de família da Andressa Pratez" fetchpriority="high">
+    <img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" fetchpriority="high">
     <h1 tabindex="-1">Fotos para lembrar de como era viver essa fase.</h1>
     <p class="apoio">Da espera pelo bebê aos abraços em família. Ensaios feitos com calma, no seu tempo.</p>
 
@@ -379,7 +380,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2A: Gestante -->
   <section class="step" data-step="2a">
-    <img class="foto foto-etapa" src="img/gestante-1.jpg" alt="Gestante em ensaio da Andressa Pratez" loading="lazy">
+    <img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" style="object-position:center 80%" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy">
     <h1 tabindex="-1">Com quantas semanas você está hoje?</h1>
     <p class="apoio">Assim eu consigo te orientar sobre a melhor época para o seu ensaio.</p>
     <div class="opcoes" id="opcoesSemanas">
@@ -393,7 +394,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2B: Newborn -->
   <section class="step" data-step="2b">
-    <img class="foto foto-etapa" src="img/newborn-1.jpg" alt="Pais com o bebê recém-nascido no colo, por Andressa Pratez" loading="lazy">
+    <img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" style="object-position:center 60%" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy">
     <h1 tabindex="-1">Seu bebê já nasceu?</h1>
     <p class="apoio">Me conta em que fase vocês estão para eu te mostrar as opções.</p>
     <div class="opcoes" id="opcoesNewborn">
@@ -405,7 +406,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2C: Família -->
   <section class="step" data-step="2c">
-    <img class="foto foto-etapa" src="img/familia-1.jpg" alt="Mãe e filho abraçados em ensaio de família, por Andressa Pratez" loading="lazy">
+    <img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" style="object-position:center 35%" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy">
     <h1 tabindex="-1">Quando você gostaria de fazer o ensaio?</h1>
     <div class="opcoes" id="opcoesFamilia" style="margin-top:14px">
       <button type="button" class="opcao" data-valor="esse mês" data-msg="Gostaria de fazer neste mês"><span class="opcao-texto"><span class="opcao-titulo">Neste mês</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
@@ -417,8 +418,8 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2D: Memórias de Natal -->
   <section class="step natal" data-step="2d">
-    <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto (pendente) -->
-    <img class="foto foto-etapa" id="natalFoto" alt="Cenário de Natal no estúdio da Andressa Pratez" hidden>
+    <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto -->
+    <img class="foto foto-etapa" id="natalFoto" width="1080" height="1440" style="object-position:center 62%" alt="Família no cenário de Natal do estúdio da Andressa Pratez" hidden>
     <h1 tabindex="-1">Memórias de Natal</h1>
     <p class="apoio">Um tempo gostoso em família, com abraços, brincadeiras e fotos pra guardar.</p>
     <p class="linha-pacote" id="natalPacote" hidden></p>
@@ -482,13 +483,13 @@ fbq('track', 'PageView');
 
   /*
    * Memórias de Natal. "ativa: false" tira a faixa da primeira tela.
-   * foto: arquivo original do cenário (ex.: "img/natal-cenario.jpg") — pendente.
+   * foto: foto real do cenário de Natal (vazia = oculta).
    * pacote: linha opcional antes da pergunta, só com valor e itens confirmados
    *         (ex.: "A partir de R$ X · 15 fotos editadas"). Vazia = oculta.
    */
   const CAMPANHA_NATAL = {
     ativa: true,
-    foto: null,
+    foto: 'img/natal-familia-cenario.jpg',
     pacote: ''
   };
 
