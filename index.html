@@ -179,6 +179,81 @@ fbq('track', 'PageView');
   }
   .moldura-etapa{margin-bottom:16px;}
 
+  /* Carrossel de fotos no topo de cada ensaio: fotos inteiras, sem corte */
+  .carrossel{margin-bottom:12px;}
+  .carrossel-trilho{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .carrossel-trilho::-webkit-scrollbar{display:none;}
+  .carrossel-slide{
+    flex:0 0 100%;
+    scroll-snap-align:center;
+    height:min(60vh, 520px);
+    margin:0;
+    padding:4px 0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .foto-carrossel{
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:12px;
+    box-shadow:var(--sombra-forte);
+  }
+  .carrossel-pontos{display:flex; justify-content:center; gap:2px; margin-top:-4px;}
+  .ponto{
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    background:none;
+    border:none;
+    cursor:pointer;
+  }
+  .ponto::before{
+    content:"";
+    width:7px;
+    height:7px;
+    border-radius:4px;
+    background:var(--areia-escura);
+    transition:width .25s ease, background .25s ease;
+  }
+  .ponto.ativo::before{width:20px; background:linear-gradient(90deg, var(--dourado-claro), var(--dourado));}
+  .ponto:focus-visible{outline:2px solid var(--dourado); outline-offset:-4px; border-radius:8px;}
+
+  /* Valor inicial (tela de contato) */
+  .preco-inicial{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin:2px 0 14px;
+    padding:10px 14px;
+    border-radius:10px;
+    background:linear-gradient(135deg, #FFF6E6 0%, #F3E1C4 100%);
+    border:1px solid rgba(181,142,87,.45);
+    box-shadow:0 6px 16px rgba(181,142,87,.18);
+    font-size:15px;
+    color:var(--texto);
+  }
+  .preco-inicial strong{
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-size:22px;
+    font-weight:600;
+    background:linear-gradient(100deg, var(--vinho), #9A6A4C 60%, var(--dourado));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
   /* Boas-vindas */
   .boas-vindas{text-align:center;}
   .retrato{
@@ -522,7 +597,7 @@ fbq('track', 'PageView');
       <span class="retrato-etiqueta">Andressa Pratez · Fotógrafa</span>
     </div>
     <h1 tabindex="-1">Oi, eu sou a <em>Andressa</em>!</h1>
-    <p class="apoio">Fotografo gestantes, bebês e famílias no meu estúdio em Santo Amaro, São Paulo. Me conta qual ensaio você quer, que eu te mostro as opções.</p>
+    <p class="apoio">Esposa, mãe do Pedro e fotógrafa há mais de 10 anos 🤎 No meu estúdio em Santo Amaro, SP, fotografo gestantes e famílias para que cada uma viva uma experiência leve e cheia de carinho.</p>
     <button type="button" class="btn" id="btnComecar">Começar <span class="btn-seta" aria-hidden="true">→</span></button>
     <p class="detalhe-rodape">São só 3 perguntas rápidas e depois a gente conversa pelo WhatsApp.</p>
   </section>
@@ -564,7 +639,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2A: Gestante -->
   <section class="step" data-step="2a">
-    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy"></div>
+    <div class="carrossel" data-carrossel aria-label="Fotos de ensaios de gestante"><div class="carrossel-trilho"><figure class="carrossel-slide"><img class="foto-carrossel" src="img/gestante-1.jpg" width="1066" height="1600" alt="Gestante de jeans sentada, com a mão do parceiro na barriga, em ensaio da Andressa Pratez" loading="lazy"></figure><figure class="carrossel-slide"><img class="foto-carrossel" src="img/gestante-2.jpg" width="1066" height="1600" alt="Gestante com jaqueta jeans e a mão na barriga, em ensaio da Andressa Pratez" loading="lazy"></figure></div><div class="carrossel-pontos"></div></div>
     <h1 tabindex="-1">Com quantas semanas você está hoje?</h1>
     <p class="apoio">Assim eu consigo te orientar sobre a melhor época para o seu ensaio.</p>
     <div class="opcoes" id="opcoesSemanas">
@@ -578,7 +653,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2B: Newborn -->
   <section class="step" data-step="2b">
-    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy"></div>
+    <div class="carrossel" data-carrossel aria-label="Fotos de ensaios newborn"><div class="carrossel-trilho"><figure class="carrossel-slide"><img class="foto-carrossel" src="img/newborn-1.jpg" width="1066" height="1600" alt="Recém-nascido dormindo na manta com um balão escrito Olá mundo, em ensaio da Andressa Pratez" loading="lazy"></figure><figure class="carrossel-slide"><img class="foto-carrossel" src="img/newborn-2.jpg" width="1600" height="1066" alt="Recém-nascido de touquinha dormindo em ensaio da Andressa Pratez" loading="lazy"></figure></div><div class="carrossel-pontos"></div></div>
     <h1 tabindex="-1">Seu bebê já nasceu?</h1>
     <p class="apoio">Me conta em que fase vocês estão para eu te mostrar as opções.</p>
     <div class="opcoes" id="opcoesNewborn">
@@ -590,7 +665,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2C: Família -->
   <section class="step" data-step="2c">
-    <div class="moldura moldura-etapa moldura-inteira"><img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy"></div>
+    <div class="carrossel" data-carrossel aria-label="Fotos de ensaios em família"><div class="carrossel-trilho"><figure class="carrossel-slide"><img class="foto-carrossel" src="img/familia-1.jpg" width="1066" height="1600" alt="Duas mães sorrindo para o bebê deitado na cama, em ensaio da Andressa Pratez" loading="lazy"></figure><figure class="carrossel-slide"><img class="foto-carrossel" src="img/familia-2.jpg" width="1067" height="1600" alt="Pais segurando as mãos do filho dando os primeiros passos, em ensaio da Andressa Pratez" loading="lazy"></figure></div><div class="carrossel-pontos"></div></div>
     <h1 tabindex="-1">Quando você gostaria de fazer o ensaio?</h1>
     <div class="opcoes" id="opcoesFamilia" style="margin-top:14px">
       <button type="button" class="opcao" data-valor="esse mês" data-msg="Gostaria de fazer neste mês"><span class="opcao-texto"><span class="opcao-titulo">Neste mês</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
@@ -602,8 +677,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2D: Memórias de Natal -->
   <section class="step natal" data-step="2d">
-    <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto -->
-    <div class="moldura moldura-etapa moldura-inteira" id="natalMoldura" hidden><img class="foto foto-etapa" id="natalFoto" width="584" height="748" alt="Mulher sorrindo com uma caneca no cenário de Natal do estúdio da Andressa Pratez"></div>
+    <div class="carrossel" data-carrossel aria-label="Fotos de ensaios de Natal"><div class="carrossel-trilho"><figure class="carrossel-slide"><img class="foto-carrossel" src="img/natal-1.jpg" width="1066" height="1600" alt="Família com o bebê preparando biscoitos no cenário de Natal do estúdio" loading="lazy"></figure><figure class="carrossel-slide"><img class="foto-carrossel" src="img/natal-2.jpg" width="1066" height="1600" alt="Pais com a bebê de vestido vermelho no cenário de Natal do estúdio" loading="lazy"></figure></div><div class="carrossel-pontos"></div></div>
     <h1 tabindex="-1">Memórias de Natal</h1>
     <p class="apoio">Um tempo gostoso em família, com abraços, brincadeiras e fotos pra guardar.</p>
     <p class="linha-pacote" id="natalPacote" hidden></p>
@@ -642,6 +716,7 @@ fbq('track', 'PageView');
       <span>Autorizo o uso das minhas respostas sobre saúde somente para o meu atendimento.</span>
     </label>
 
+    <p class="preco-inicial">✨ Ensaios a partir de <strong>R$ 650</strong></p>
     <button class="btn" id="btnEnviar" disabled>Continuar no WhatsApp</button>
     <p class="apoio-botao">Vou te passar as opções e conferir as datas com você.</p>
     <p class="aviso-privacidade">Ao continuar, você concorda em ser contatado pelo WhatsApp. Veja a <a href="https://leadinghub.netlify.app/privacidade/pk_94406836b33f43488b00f37a39bd846c" target="_blank" rel="noopener">Política de privacidade</a>.</p>
@@ -667,13 +742,11 @@ fbq('track', 'PageView');
 
   /*
    * Memórias de Natal. "ativa: false" tira a faixa da primeira tela.
-   * foto: foto real do cenário de Natal (vazia = oculta).
    * pacote: linha opcional antes da pergunta, só com valor e itens confirmados
    *         (ex.: "A partir de R$ X · 15 fotos editadas"). Vazia = oculta.
    */
   const CAMPANHA_NATAL = {
     ativa: true,
-    foto: 'img/natal-cenario.jpg', // post instagram.com/p/DfNxVWjGohC
     pacote: ''
   };
 
@@ -690,11 +763,6 @@ fbq('track', 'PageView');
   // --- Natal e apresentação -------------------------------------------------
   const faixaNatal = document.getElementById('faixaNatal');
   faixaNatal.hidden = !CAMPANHA_NATAL.ativa;
-  if(CAMPANHA_NATAL.foto){
-    const natalFoto = document.getElementById('natalFoto');
-    natalFoto.src = CAMPANHA_NATAL.foto;
-    document.getElementById('natalMoldura').hidden = false;
-  }
   if(CAMPANHA_NATAL.pacote){
     const linha = document.getElementById('natalPacote');
     linha.textContent = CAMPANHA_NATAL.pacote;
@@ -930,6 +998,33 @@ fbq('track', 'PageView');
     const url = 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(mensagem);
     const destino = window.LeadHub ? window.LeadHub.whatsappUrl(url) : url;
     setTimeout(() => { window.location.href = destino; }, 200);
+  });
+
+  // --- Carrosséis de fotos (deslizar, pontos e troca automática suave) --------
+  document.querySelectorAll('[data-carrossel]').forEach(c => {
+    const trilho = c.querySelector('.carrossel-trilho');
+    const slides = Array.from(trilho.children);
+    const pontos = c.querySelector('.carrossel-pontos');
+    let timer = null;
+    const atual = () => Math.round(trilho.scrollLeft / Math.max(1, trilho.clientWidth));
+    const ir = i => trilho.scrollTo({ left: i * trilho.clientWidth, behavior: 'smooth' });
+    const parar = () => { clearInterval(timer); timer = null; };
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ponto' + (i === 0 ? ' ativo' : '');
+      b.setAttribute('aria-label', 'Foto ' + (i + 1) + ' de ' + slides.length);
+      b.addEventListener('click', () => { parar(); ir(i); });
+      pontos.appendChild(b);
+    });
+    trilho.addEventListener('scroll', () => {
+      const a = atual();
+      Array.from(pontos.children).forEach((p, i) => p.classList.toggle('ativo', i === a));
+    }, { passive: true });
+    ['pointerdown', 'touchstart', 'wheel'].forEach(ev => trilho.addEventListener(ev, parar, { passive: true }));
+    if(slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      timer = setInterval(() => { if(trilho.offsetParent) ir((atual() + 1) % slides.length); }, 4500);
+    }
   });
 
   // --- Início: seleção geral ou entrada direta (?ensaio=natal) ---------------
