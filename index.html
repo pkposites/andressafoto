@@ -293,6 +293,75 @@ fbq('track', 'PageView');
   .boas-vindas .apoio{max-width:330px; margin:0 auto 20px;}
   .detalhe-rodape{font-size:13px; color:var(--texto-suave); margin-top:12px;}
 
+  /* Vídeo da experiência no estúdio (tela de escolha do ensaio) */
+  .video-moldura{
+    position:relative;
+    width:fit-content;
+    max-width:100%;
+    margin:0 auto 18px;
+    border-radius:16px;
+    box-shadow:var(--sombra-forte);
+    background:#2E211C;
+  }
+  .video-moldura::before{
+    content:"";
+    position:absolute;
+    inset:-10px;
+    z-index:-1;
+    border-radius:24px;
+    background:conic-gradient(from 30deg, rgba(217,185,126,0), rgba(217,185,126,.55), rgba(232,196,186,.5), rgba(217,185,126,0) 70%);
+    filter:blur(12px);
+  }
+  .video-moldura video{
+    display:block;
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:min(64vh, 560px);
+    aspect-ratio:9/16;
+    border-radius:16px;
+    object-fit:contain;
+    background:#2E211C;
+  }
+  .video-som{
+    position:absolute;
+    right:10px;
+    top:10px;
+    min-height:44px;
+    padding:0 14px;
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:999px;
+    background:rgba(46,33,28,.55);
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+    color:#fff;
+    font-family:'Jost', system-ui, sans-serif;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  .video-som:focus-visible, .video-play:focus-visible{outline:2px solid var(--dourado-claro); outline-offset:2px;}
+  .video-play{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:68px;
+    height:68px;
+    transform:translate(-50%, -50%);
+    border:1px solid rgba(255,255,255,.6);
+    border-radius:50%;
+    background:rgba(46,33,28,.5);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+    color:#fff;
+    font-size:26px;
+    padding-left:4px;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(0,0,0,.3);
+  }
+  .video-play[hidden]{display:none;}
+
   h1{
     font-family:'Cormorant Garamond', Georgia, serif;
     font-size:28px;
@@ -600,11 +669,17 @@ fbq('track', 'PageView');
     <p class="apoio">Esposa, mãe do Pedro e fotógrafa há mais de 10 anos 🤎 No meu estúdio em Santo Amaro, SP, fotografo gestantes e famílias para que cada uma viva uma experiência leve e cheia de carinho.</p>
     <button type="button" class="btn" id="btnComecar">Começar <span class="btn-seta" aria-hidden="true">→</span></button>
     <p class="detalhe-rodape">São só 3 perguntas rápidas e depois a gente conversa pelo WhatsApp.</p>
+
   </section>
 
   <!-- ETAPA 1: escolha do ensaio -->
   <section class="step" data-step="1">
-    <div class="moldura moldura-inteira"><img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" loading="lazy"></div>
+    <!-- Vídeo: a experiência no estúdio (inteiro, sem corte; som opcional) -->
+    <div class="video-moldura">
+      <video id="videoEstudio" src="video/experiencia-estudio.mp4" poster="video/experiencia-estudio-capa.jpg" width="720" height="1280" muted loop playsinline preload="none" aria-label="Vídeo dos bastidores dos ensaios no estúdio da Andressa Pratez, em Santo Amaro"></video>
+      <button type="button" class="video-play" id="videoPlay" aria-label="Assistir ao vídeo" hidden>▶</button>
+      <button type="button" class="video-som" id="videoSom" aria-pressed="false">🔇 Ativar som</button>
+    </div>
     <h1 tabindex="-1">Fotos para lembrar de como era viver essa fase.</h1>
     <p class="apoio">Da espera pelo bebê aos abraços em família. Ensaios feitos com calma, no seu tempo.</p>
 
@@ -812,6 +887,7 @@ fbq('track', 'PageView');
     } catch(e){}
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if(numero > 1) step.querySelector('h1').focus({ preventScroll: true });
+    document.dispatchEvent(new CustomEvent('mudouEtapa', { detail: stepId }));
   }
 
   function etapaValida(stepId){
@@ -1044,6 +1120,60 @@ fbq('track', 'PageView');
 
   // Boas-vindas -> escolha do ensaio
   document.getElementById('btnComecar').addEventListener('click', () => irPara('1'));
+
+  // --- Vídeo da experiência: toca sem som quando aparece; som opcional ------
+  (function(){
+    const video = document.getElementById('videoEstudio');
+    const som = document.getElementById('videoSom');
+    const play = document.getElementById('videoPlay');
+    const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let visivel = false;
+
+    function atualizarSom(){
+      som.textContent = video.muted ? '🔇 Ativar som' : '🔊 Desativar som';
+      som.setAttribute('aria-pressed', String(!video.muted));
+    }
+    function tocar(){
+      const r = video.play();
+      if(r && r.catch) r.catch(() => { play.hidden = false; }); // ex.: modo economia no iPhone
+    }
+    video.addEventListener('play', () => { play.hidden = true; });
+    video.addEventListener('pause', () => { if(visivel) play.hidden = false; });
+
+    som.addEventListener('click', () => {
+      video.muted = !video.muted;
+      atualizarSom();
+      if(video.paused) tocar();
+    });
+    play.addEventListener('click', tocar);
+
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(entradas => {
+        entradas.forEach(e => {
+          visivel = e.isIntersecting;
+          if(visivel && etapaAtual === '1'){
+            if(semMovimento) play.hidden = false; else tocar();
+          } else if(!video.paused){
+            video.pause();
+          }
+        });
+      }, { threshold: 0.4 }).observe(video);
+    } else {
+      play.hidden = false;
+    }
+
+    // Saiu da tela de escolha: pausa
+    document.addEventListener('mudouEtapa', e => {
+      if(e.detail !== '1'){ if(!video.paused) video.pause(); return; }
+      // Voltou para a escolha: retoma se o vídeo estiver na tela
+      requestAnimationFrame(() => {
+        const r = video.getBoundingClientRect();
+        visivel = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+        if(visivel && video.paused){ if(semMovimento) play.hidden = false; else tocar(); }
+      });
+    });
+    atualizarSom();
+  })();
 </script>
 
 </body>
