@@ -37,15 +37,25 @@ fbq('track', 'PageView');
     --texto:#48342B;
     --texto-suave:#7A6556;
     --vinho:#60343B;
-    --vinho-escuro:#4B272D;
+    --vinho-claro:#7E4650;
+    --vinho-escuro:#45242A;
     --dourado:#B58E57;
+    --dourado-claro:#D9B97E;
+    --brilho:#FFF8EC;
+    --sombra:0 6px 20px rgba(72,52,43,.08), 0 1px 3px rgba(72,52,43,.06);
+    --sombra-forte:0 14px 34px rgba(72,52,43,.16), 0 3px 8px rgba(72,52,43,.08);
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
 
   html{-webkit-text-size-adjust:100%;}
   body{
-    background:var(--fundo);
+    background:
+      radial-gradient(120% 60% at 0% 0%, rgba(217,185,126,.28), transparent 60%),
+      radial-gradient(90% 50% at 100% 18%, rgba(232,196,186,.30), transparent 65%),
+      radial-gradient(110% 60% at 50% 110%, rgba(181,142,87,.18), transparent 60%),
+      linear-gradient(180deg, #FCF7EF 0%, var(--fundo) 45%, #F6ECDF 100%);
+    background-attachment:fixed;
     font-family:'Jost', system-ui, sans-serif;
     color:var(--texto);
     min-height:100vh;
@@ -77,6 +87,27 @@ fbq('track', 'PageView');
     color:var(--texto-suave);
     margin-top:1px;
   }
+  /* Mini-retrato da Andressa ao lado da assinatura (a partir da 2ª tela) */
+  .avatar{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center 18%;
+    vertical-align:middle;
+    margin:-3px 8px 0 0;
+    border:1.5px solid var(--dourado-claro);
+    box-shadow:0 2px 6px rgba(72,52,43,.18);
+  }
+  .avatar[hidden]{display:none;}
+  .assinatura::after{
+    content:"";
+    display:block;
+    width:72px;
+    height:1px;
+    margin:9px auto 0;
+    background:linear-gradient(90deg, transparent, var(--dourado), transparent);
+  }
 
   /* Progresso (a partir da 2ª tela) */
   .progresso{
@@ -88,24 +119,42 @@ fbq('track', 'PageView');
   .progresso[hidden]{display:none;}
   .progress-track{
     flex:1;
-    height:3px;
-    background:var(--areia);
-    border-radius:3px;
+    height:4px;
+    background:rgba(212,193,163,.45);
+    border-radius:4px;
     overflow:hidden;
   }
   .progress-fill{
     height:100%;
-    background:var(--dourado);
-    border-radius:3px;
+    background:linear-gradient(90deg, var(--dourado-claro), var(--dourado) 60%, var(--vinho-claro));
+    border-radius:4px;
     width:50%;
+    box-shadow:0 0 8px rgba(217,185,126,.7);
     transition:width .35s ease;
   }
   .etapa-label{font-size:12px; color:var(--texto-suave); white-space:nowrap;}
 
   .step{display:none;}
-  .step.active{display:block; animation:fadeIn .3s ease;}
-  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  .step.active{display:block; animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
 
+  /* Fotos */
+  .moldura{
+    position:relative;
+    border-radius:12px;
+    box-shadow:var(--sombra-forte);
+    margin-bottom:18px;
+  }
+  .moldura::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:12px;
+    pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+    background:linear-gradient(180deg, rgba(255,248,236,.10) 0%, transparent 35%, transparent 70%, rgba(72,52,43,.18) 100%);
+  }
+  .moldura[hidden]{display:none;}
   .foto{
     display:block;
     width:100%;
@@ -114,10 +163,49 @@ fbq('track', 'PageView');
     object-fit:cover;
     background:var(--areia);
   }
-  .foto-abertura{aspect-ratio:3/2; object-position:center 35%; margin-bottom:16px;}
+  .foto-abertura{aspect-ratio:3/2; object-position:center 35%;}
   @media (min-width:600px){ .foto-abertura{aspect-ratio:4/3;} }
-  .foto-etapa{aspect-ratio:16/10; object-position:center 30%; margin-bottom:16px;}
-  .foto[hidden]{display:none;}
+  .foto-etapa{aspect-ratio:16/10; object-position:center 30%;}
+  .moldura-etapa{margin-bottom:16px;}
+
+  /* Boas-vindas */
+  .boas-vindas{text-align:center;}
+  .retrato{
+    position:relative;
+    width:min(68%, 270px);
+    margin:6px auto 20px;
+  }
+  .retrato::before{
+    content:"";
+    position:absolute;
+    inset:-10px;
+    border-radius:22px;
+    background:conic-gradient(from 210deg, rgba(217,185,126,.0), rgba(217,185,126,.65), rgba(232,196,186,.55), rgba(217,185,126,.0) 70%);
+    filter:blur(10px);
+    opacity:.9;
+  }
+  .retrato .moldura{margin:0; border-radius:18px;}
+  .retrato .moldura::after{border-radius:18px;}
+  .retrato .foto{aspect-ratio:4/5; border-radius:18px; object-position:center 22%;}
+  .retrato-etiqueta{
+    position:absolute;
+    left:50%;
+    bottom:-14px;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    padding:6px 14px;
+    border-radius:999px;
+    background:linear-gradient(135deg, #FFFDF8, #F7EBD8);
+    border:1px solid rgba(181,142,87,.45);
+    box-shadow:0 6px 16px rgba(72,52,43,.14);
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:.4px;
+    color:var(--texto);
+  }
+  .boas-vindas h1{font-size:31px; margin:4px 0 8px;}
+  .boas-vindas .apoio{max-width:330px; margin:0 auto 20px;}
+  .detalhe-rodape{font-size:13px; color:var(--texto-suave); margin-top:12px;}
 
   h1{
     font-family:'Cormorant Garamond', Georgia, serif;
@@ -128,7 +216,20 @@ fbq('track', 'PageView');
     margin-bottom:8px;
   }
   h1:focus{outline:none;}
-  .natal h1{color:var(--vinho);}
+  h1 em, .destaque{
+    font-style:italic;
+    background:linear-gradient(100deg, var(--vinho) 0%, #9A6A4C 50%, var(--dourado) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    padding-right:2px;
+  }
+  .natal h1{
+    background:linear-gradient(100deg, var(--vinho-escuro), var(--vinho-claro) 60%, #A0525E);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
 
   .apoio{
     font-size:15px;
@@ -152,44 +253,66 @@ fbq('track', 'PageView');
   .linha-pacote[hidden]{display:none;}
 
   /* Cartões clicáveis */
-  .opcoes{display:flex; flex-direction:column; gap:8px;}
+  .opcoes{display:flex; flex-direction:column; gap:9px;}
   .opcao{
     display:flex;
     align-items:center;
     gap:12px;
     width:100%;
-    min-height:52px;
+    min-height:54px;
     padding:9px 14px;
-    background:var(--cartao);
+    background:linear-gradient(180deg, #FFFEFB 0%, #FBF5EC 100%);
     border:1px solid var(--areia);
     border-radius:10px;
+    box-shadow:var(--sombra);
     font-family:'Jost', system-ui, sans-serif;
     color:var(--texto);
     text-align:left;
     cursor:pointer;
-    transition:border-color .15s ease, background .15s ease;
+    transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease, background .2s ease;
   }
-  .opcao:hover{border-color:var(--areia-escura);}
+  .opcao:hover{border-color:var(--dourado-claro); box-shadow:var(--sombra-forte); transform:translateY(-1px);}
+  .opcao:active{transform:translateY(0) scale(.99);}
   .opcao:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
-  .opcao.selecionada{border-color:var(--dourado); background:#FBF3E6; box-shadow:inset 0 0 0 1px var(--dourado);}
-  .opcao-icone{flex:0 0 auto; font-size:16px; width:20px; text-align:center; opacity:.85;}
+  .opcao.selecionada{
+    border-color:var(--dourado);
+    background:linear-gradient(135deg, #FFF8EC 0%, #F6E6CC 100%);
+    box-shadow:0 0 0 1px var(--dourado), 0 8px 22px rgba(181,142,87,.25);
+  }
+  .opcao-icone{
+    flex:0 0 auto;
+    display:grid;
+    place-items:center;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 25%, #FFFFFF, #F3E5CF 70%);
+    box-shadow:inset 0 0 0 1px rgba(181,142,87,.35);
+    font-size:15px;
+  }
   .opcao-texto{flex:1; min-width:0; display:flex; flex-direction:column;}
   .opcao-titulo{font-size:15.5px; font-weight:500; line-height:1.3;}
   .opcao-sub{font-size:13px; color:var(--texto-suave); line-height:1.35;}
-  .opcao-seta{flex:0 0 auto; color:var(--areia-escura); font-size:18px; line-height:1;}
+  .opcao-seta{flex:0 0 auto; color:var(--dourado); font-size:20px; line-height:1; transition:transform .2s ease;}
+  .opcao:hover .opcao-seta{transform:translateX(2px);}
 
   /* Faixa de Natal */
   .faixa-natal{
+    position:relative;
+    overflow:hidden;
     display:flex;
     align-items:center;
     gap:12px;
     width:100%;
-    min-height:52px;
-    margin-top:12px;
+    min-height:58px;
+    margin-top:14px;
     padding:10px 14px;
-    background:var(--vinho);
-    border:none;
+    background:
+      radial-gradient(circle at 88% 20%, rgba(217,185,126,.35), transparent 40%),
+      linear-gradient(135deg, var(--vinho-claro) 0%, var(--vinho) 45%, var(--vinho-escuro) 100%);
+    border:1px solid rgba(217,185,126,.45);
     border-radius:10px;
+    box-shadow:0 10px 26px rgba(96,52,59,.30);
     color:#FBF1EC;
     font-family:'Jost', system-ui, sans-serif;
     text-align:left;
@@ -197,16 +320,26 @@ fbq('track', 'PageView');
   }
   .faixa-natal[hidden]{display:none;}
   .faixa-natal:focus-visible{outline:2px solid var(--dourado); outline-offset:2px;}
-  .faixa-natal .opcao-titulo{font-family:'Cormorant Garamond', Georgia, serif; font-size:19px; font-weight:600;}
-  .faixa-natal .opcao-sub{color:#E9D3CF;}
-  .faixa-natal .opcao-seta{color:#E9D3CF;}
+  .faixa-natal .opcao-icone{background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), rgba(255,255,255,.08) 70%); box-shadow:inset 0 0 0 1px rgba(217,185,126,.55);}
+  .faixa-natal .opcao-titulo{
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-size:20px;
+    font-weight:600;
+    background:linear-gradient(100deg, #FFF3DE, var(--dourado-claro) 70%, #FFF3DE);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .faixa-natal .opcao-sub{color:#EBD5D1;}
+  .faixa-natal .opcao-seta{color:var(--dourado-claro);}
 
   .apresentacao{
     margin-top:20px;
     padding:14px 16px;
-    background:var(--cartao);
+    background:linear-gradient(180deg, #FFFEFB, #FBF5EC);
     border:1px solid var(--areia);
     border-radius:10px;
+    box-shadow:var(--sombra);
     font-size:14px;
     line-height:1.5;
     color:var(--texto-suave);
@@ -218,8 +351,8 @@ fbq('track', 'PageView');
   .resumo-respostas{
     padding:10px 14px;
     margin-bottom:14px;
-    background:var(--cartao);
-    border:1px solid var(--areia);
+    background:linear-gradient(135deg, #FFF8EC, #F6E9D6);
+    border:1px solid rgba(181,142,87,.35);
     border-radius:10px;
     font-size:14px;
     line-height:1.45;
@@ -228,7 +361,7 @@ fbq('track', 'PageView');
   .nota{
     padding:10px 14px;
     margin-bottom:14px;
-    background:#FBF3E6;
+    background:linear-gradient(180deg, #FFFCF6, #FBF3E6);
     border:1px solid var(--areia);
     border-radius:10px;
     font-size:13.5px;
@@ -243,15 +376,16 @@ fbq('track', 'PageView');
     min-height:48px;
     padding:12px 14px;
     margin-bottom:10px;
-    background:var(--cartao);
+    background:linear-gradient(180deg, #FFFFFF, #FFFCF7);
     border:1px solid var(--areia-escura);
     border-radius:10px;
+    box-shadow:inset 0 1px 2px rgba(72,52,43,.05);
     font-family:'Jost', system-ui, sans-serif;
     font-size:16px;
     color:var(--texto);
   }
   .campo::placeholder{color:#A8968A;}
-  .campo:focus{outline:none; border-color:var(--dourado); box-shadow:0 0 0 2px rgba(181,142,87,.18);}
+  .campo:focus{outline:none; border-color:var(--dourado); box-shadow:0 0 0 3px rgba(217,185,126,.30);}
 
   .consentimento-saude{
     display:flex;
@@ -266,24 +400,45 @@ fbq('track', 'PageView');
   .consentimento-saude[hidden]{display:none;}
   .consentimento-saude input{margin-top:2px; width:18px; height:18px; flex:0 0 auto; accent-color:var(--vinho);}
 
+  /* Botão principal com brilho */
   .btn{
+    position:relative;
+    overflow:hidden;
     display:block;
     width:100%;
-    min-height:50px;
+    min-height:52px;
     margin-top:6px;
     padding:13px 18px;
-    background:var(--vinho);
-    border:none;
+    background:linear-gradient(135deg, var(--vinho-claro) 0%, var(--vinho) 50%, var(--vinho-escuro) 100%);
+    border:1px solid rgba(217,185,126,.35);
     border-radius:10px;
+    box-shadow:0 10px 24px rgba(96,52,59,.32), inset 0 1px 0 rgba(255,255,255,.18);
     color:#fff;
     font-family:'Jost', system-ui, sans-serif;
     font-size:16px;
     font-weight:600;
+    letter-spacing:.2px;
     cursor:pointer;
+    transition:transform .15s ease, box-shadow .2s ease, filter .2s ease;
   }
-  .btn:hover:not(:disabled){background:var(--vinho-escuro);}
-  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .btn::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-60%;
+    width:45%;
+    height:100%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.28), transparent);
+    transform:skewX(-20deg);
+    animation:brilho 4.5s ease-in-out infinite 1.2s;
+  }
+  @keyframes brilho{0%{left:-60%;} 28%{left:130%;} 100%{left:130%;}}
+  .btn:hover:not(:disabled){filter:brightness(1.06); box-shadow:0 14px 30px rgba(96,52,59,.38), inset 0 1px 0 rgba(255,255,255,.2);}
   .btn:active:not(:disabled){transform:scale(0.99);}
+  .btn:disabled{opacity:.45; cursor:not-allowed; box-shadow:none;}
+  .btn:disabled::after{display:none;}
+  .btn-seta{display:inline-block; margin-left:6px; transition:transform .2s ease;}
+  .btn:hover .btn-seta{transform:translateX(3px);}
 
   .apoio-botao{
     text-align:center;
@@ -326,6 +481,12 @@ fbq('track', 'PageView');
   @media (min-width:600px){
     body{padding-top:32px;}
     h1{font-size:32px;}
+    .boas-vindas h1{font-size:36px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .btn::after{animation:none; display:none;}
+    .step.active{animation:none;}
+    .opcao, .opcao-seta, .btn-seta{transition:none;}
   }
 </style>
 </head>
@@ -334,7 +495,7 @@ fbq('track', 'PageView');
 <div class="wrap">
 
   <header class="assinatura">
-    <div class="assinatura-nome">Andressa Pratez Fotografia</div>
+    <div class="assinatura-nome"><img class="avatar" id="avatarAndressa" src="img/andressa.jpg" alt="" width="1080" height="1920" hidden>Andressa Pratez Fotografia</div>
     <div class="assinatura-local">Santo Amaro, São Paulo</div>
   </header>
 
@@ -343,9 +504,21 @@ fbq('track', 'PageView');
     <span class="etapa-label" id="etapaLabel" aria-live="polite"></span>
   </div>
 
+  <!-- BOAS-VINDAS: quem é a Andressa -->
+  <section class="step active boas-vindas" data-step="0">
+    <div class="retrato">
+      <div class="moldura"><img class="foto" src="img/andressa.jpg" width="1080" height="1920" alt="Andressa Pratez, fotógrafa, segurando a câmera no estúdio" fetchpriority="high"></div>
+      <span class="retrato-etiqueta">Andressa Pratez · Fotógrafa</span>
+    </div>
+    <h1 tabindex="-1">Oi, eu sou a <em>Andressa</em>!</h1>
+    <p class="apoio">Fotografo gestantes, bebês e famílias no meu estúdio em Santo Amaro, São Paulo. Me conta qual ensaio você quer, que eu te mostro as opções.</p>
+    <button type="button" class="btn" id="btnComecar">Começar <span class="btn-seta" aria-hidden="true">→</span></button>
+    <p class="detalhe-rodape">São só 3 perguntas rápidas e depois a gente conversa pelo WhatsApp.</p>
+  </section>
+
   <!-- ETAPA 1: escolha do ensaio -->
-  <section class="step active" data-step="1">
-    <img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" fetchpriority="high">
+  <section class="step" data-step="1">
+    <div class="moldura"><img class="foto foto-abertura" src="img/abertura-mae-bebe.jpg" width="1080" height="1349" alt="Mãe rindo com o bebê no colo em ensaio da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Fotos para lembrar de como era viver essa fase.</h1>
     <p class="apoio">Da espera pelo bebê aos abraços em família. Ensaios feitos com calma, no seu tempo.</p>
 
@@ -380,7 +553,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2A: Gestante -->
   <section class="step" data-step="2a">
-    <img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" style="object-position:center 80%" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy">
+    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/gestante-casal.jpg" width="1080" height="1920" style="object-position:center 80%" alt="Casal com a mão na barriga em ensaio de gestante da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Com quantas semanas você está hoje?</h1>
     <p class="apoio">Assim eu consigo te orientar sobre a melhor época para o seu ensaio.</p>
     <div class="opcoes" id="opcoesSemanas">
@@ -394,7 +567,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2B: Newborn -->
   <section class="step" data-step="2b">
-    <img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" style="object-position:center 60%" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy">
+    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/newborn-mae-bebe.jpg" width="1080" height="1350" style="object-position:center 60%" alt="Mãe sorrindo para o bebê deitado em ensaio da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Seu bebê já nasceu?</h1>
     <p class="apoio">Me conta em que fase vocês estão para eu te mostrar as opções.</p>
     <div class="opcoes" id="opcoesNewborn">
@@ -406,7 +579,7 @@ fbq('track', 'PageView');
 
   <!-- ETAPA 2C: Família -->
   <section class="step" data-step="2c">
-    <img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" style="object-position:center 35%" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy">
+    <div class="moldura moldura-etapa"><img class="foto foto-etapa" src="img/familia-mae-filho.jpg" width="1080" height="1918" style="object-position:center 35%" alt="Mãe e filho rindo abraçados em ensaio de família da Andressa Pratez" loading="lazy"></div>
     <h1 tabindex="-1">Quando você gostaria de fazer o ensaio?</h1>
     <div class="opcoes" id="opcoesFamilia" style="margin-top:14px">
       <button type="button" class="opcao" data-valor="esse mês" data-msg="Gostaria de fazer neste mês"><span class="opcao-texto"><span class="opcao-titulo">Neste mês</span></span><span class="opcao-seta" aria-hidden="true">›</span></button>
@@ -419,7 +592,7 @@ fbq('track', 'PageView');
   <!-- ETAPA 2D: Memórias de Natal -->
   <section class="step natal" data-step="2d">
     <!-- Foto do cenário de Natal: definida em CAMPANHA_NATAL.foto -->
-    <img class="foto foto-etapa" id="natalFoto" width="584" height="748" style="object-position:center 30%" alt="Mulher sorrindo com uma caneca no cenário de Natal do estúdio da Andressa Pratez" hidden>
+    <div class="moldura moldura-etapa" id="natalMoldura" hidden><img class="foto foto-etapa" id="natalFoto" width="584" height="748" style="object-position:center 30%" alt="Mulher sorrindo com uma caneca no cenário de Natal do estúdio da Andressa Pratez"></div>
     <h1 tabindex="-1">Memórias de Natal</h1>
     <p class="apoio">Um tempo gostoso em família, com abraços, brincadeiras e fotos pra guardar.</p>
     <p class="linha-pacote" id="natalPacote" hidden></p>
@@ -501,7 +674,7 @@ fbq('track', 'PageView');
   const ENTRADA_DIRETA = { natal: 'Natal', gestante: 'Gestante', newborn: 'Newborn', familia: 'Família', 'família': 'Família' };
 
   const respostas = { tipo: null, detalhe: null, detalheMsg: null, detalheTexto: null, fotos: null, fotosResumo: null, fotosMsg: null, fotosTexto: null };
-  let etapaAtual = '1';
+  let etapaAtual = '0';
 
   // --- Natal e apresentação -------------------------------------------------
   const faixaNatal = document.getElementById('faixaNatal');
@@ -509,7 +682,7 @@ fbq('track', 'PageView');
   if(CAMPANHA_NATAL.foto){
     const natalFoto = document.getElementById('natalFoto');
     natalFoto.src = CAMPANHA_NATAL.foto;
-    natalFoto.hidden = false;
+    document.getElementById('natalMoldura').hidden = false;
   }
   if(CAMPANHA_NATAL.pacote){
     const linha = document.getElementById('natalPacote');
@@ -534,6 +707,7 @@ fbq('track', 'PageView');
   const etapaLabel = document.getElementById('etapaLabel');
 
   function numeroEtapa(stepId){
+    if(stepId === '0') return 0;
     if(stepId === '1') return 1;
     if(stepId === 'fotos') return 3;
     if(stepId === 'contato') return 4;
@@ -547,7 +721,8 @@ fbq('track', 'PageView');
     const step = document.querySelector('[data-step="' + stepId + '"]');
     step.classList.add('active');
     const numero = numeroEtapa(stepId);
-    progresso.hidden = numero === 1;
+    progresso.hidden = numero <= 1;
+    document.getElementById('avatarAndressa').hidden = numero === 0;
     progressFill.style.width = (numero / 4 * 100) + '%';
     etapaLabel.textContent = 'Etapa ' + numero + ' de 4';
     // Botão "voltar" do celular volta uma etapa (a URL e as UTMs não mudam)
@@ -561,7 +736,7 @@ fbq('track', 'PageView');
   }
 
   function etapaValida(stepId){
-    if(stepId === '1') return true;
+    if(stepId === '0' || stepId === '1') return true;
     if(!respostas.tipo) return false;
     if(stepId === ENSAIOS[respostas.tipo].etapa) return true;
     if(stepId === 'fotos') return !!respostas.detalhe;
@@ -570,7 +745,7 @@ fbq('track', 'PageView');
   }
   window.addEventListener('popstate', e => {
     const alvo = e.state && e.state.etapa;
-    irPara(alvo && etapaValida(alvo) ? alvo : '1', { historico: 'none' });
+    irPara(alvo && etapaValida(alvo) ? alvo : '0', { historico: 'none' });
   });
 
   // "Voltar" da página = voltar do navegador, para os dois andarem juntos
@@ -752,13 +927,17 @@ fbq('track', 'PageView');
     try { entrada = new URLSearchParams(window.location.search).get('ensaio'); } catch(e){}
     const tipo = entrada && ENTRADA_DIRETA[entrada.toLowerCase()];
     if(tipo && (tipo !== 'Natal' || CAMPANHA_NATAL.ativa)){
-      // A etapa 1 fica no histórico: "voltar" leva à seleção de ensaio
+      // Anúncio direto: pula as boas-vindas; "voltar" leva à seleção de ensaio
       try { history.replaceState({ etapa: '1', i: 0 }, ''); } catch(e){}
+      irPara('1', { historico: 'none' });
       irPara(escolherTipo(tipo));
     } else {
-      try { history.replaceState({ etapa: '1', i: 0 }, ''); } catch(e){}
+      try { history.replaceState({ etapa: '0', i: 0 }, ''); } catch(e){}
     }
   })();
+
+  // Boas-vindas -> escolha do ensaio
+  document.getElementById('btnComecar').addEventListener('click', () => irPara('1'));
 </script>
 
 </body>
