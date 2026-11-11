@@ -1045,24 +1045,60 @@ fbq('track', 'PageView');
     return m ? m.pop() : '';
   }
 
-  btnEnviar.addEventListener('click', () => {
+  // Dados do contato no formato da Meta (iguais aos do Lead Hub): telefone com
+  // 55, primeiro nome em minúsculas sem acento, país e o id do visitante.
+  function normalizarNome(v){
+    return v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  }
+  function dadosMeta(nome, telefone){
+    const d = {};
+    if(telefone.length >= 10) d.ph = telefone.length <= 11 ? '55' + telefone : telefone;
+    const primeiro = normalizarNome(nome.split(/\s+/)[0] || '');
+    if(primeiro) d.fn = primeiro;
+    d.country = 'br';
+    if(window.LeadHub && window.LeadHub.visitorId) d.external_id = window.LeadHub.visitorId;
+    return d;
+  }
+  async function sha256(texto){
+    const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+    return Array.from(new Uint8Array(bytes)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function dadosMetaHash(d){
+    const out = {};
+    for(const k of Object.keys(d)) out[k] = [await sha256(d[k])];
+    return out;
+  }
+
+  btnEnviar.addEventListener('click', async () => {
     if(!respostas.tipo || !respostas.detalhe || !respostas.fotos) return;
+    if(btnEnviar.dataset.enviando) return;
+    btnEnviar.dataset.enviando = '1';
     const nome = inputNome.value.trim();
     const eventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
 
+    // Correspondência avançada: só com o aceite dos cookies (LGPD). Sem aceite,
+    // a Meta continua recebendo apenas IP, navegador e o clique do anúncio.
+    const aceitou = !!(window.LeadHub && window.LeadHub.consentStatus && window.LeadHub.consentStatus() === 'granted');
+    const dados = aceitou ? dadosMeta(nome, inputTelefone.value.replace(/\D/g, '')) : null;
+    let dadosHash = null;
+    if(dados){ try { dadosHash = await dadosMetaHash(dados); } catch(e){} }
+
     // 1) Pixel client-side (Meta dedup via eventID) — única conversão da página
+    if(dados) fbq('init', '2163257197549501', dados); // o pixel aplica o hash
     fbq('track', 'Lead', { content_name: 'LP Andressa Pratez - ' + respostas.tipo }, { eventID: eventId });
 
-    // 2) CAPI server-side via Worker (não bloqueia o redirect)
+    // 2) CAPI server-side via Worker (keepalive: o envio sobrevive à ida ao WhatsApp)
     fetch(CAPI_ENDPOINT, {
       method: 'POST',
+      keepalive: true,
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         event_id: eventId,
         event_source_url: window.location.href,
         fbp: getCookie('_fbp'),
         fbc: getCookie('_fbc'),
-        content_name: 'LP Andressa Pratez - ' + respostas.tipo
+        content_name: 'LP Andressa Pratez - ' + respostas.tipo,
+        ...(dadosHash && { user_data: dadosHash })
       })
     }).catch(()=>{});
 
@@ -1086,7 +1122,7 @@ fbq('track', 'PageView');
 
     const url = 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(mensagem);
     const destino = window.LeadHub ? window.LeadHub.whatsappUrl(url) : url;
-    setTimeout(() => { window.location.href = destino; }, 200);
+    setTimeout(() => { window.location.href = destino; delete btnEnviar.dataset.enviando; }, 200);
   });
 
   // --- Carrosséis de fotos (deslizar, pontos e troca automática suave) --------
